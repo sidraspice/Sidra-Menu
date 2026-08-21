@@ -6,15 +6,16 @@ function parseCSV(text) {
   const lines = text.split(/\r?\n/).filter(line => line.trim() !== '');
   if (lines.length < 2) return [];
 
-  const headers = lines[0].split(',').map(h => h.trim().replace(/^[\"\']|[\"\']$/g, ''));
+  const headers = lines[0].split(',').map(h => h.trim().replace(/^["']|["']$/g, ''));
   const categoryIdx = headers.findIndex(h => h.includes('قسم'));
   const nameIdx = headers.findIndex(h => h.includes('منتج') || h.includes('اسم'));
   const weightIdx = headers.findIndex(h => h.includes('وزن'));
   const priceIdx = headers.findIndex(h => h.includes('سعر'));
+  const statusIdx = headers.findIndex(h => h.includes('حالة') || h.includes('متاح') || h.includes('توفر') || h.includes('status') || h.includes('المتاح'));
 
   const rows = [];
   for (let i = 1; i < lines.length; i++) {
-    const values = lines[i].split(',').map(v => v.trim().replace(/^[\"\']|[\"\']$/g, ''));
+    const values = lines[i].split(',').map(v => v.trim().replace(/^["']|["']$/g, ''));
     if (!values[nameIdx] || !values[priceIdx]) continue;
 
     const rawWeight = values[weightIdx] ? values[weightIdx].trim() : '';
@@ -22,11 +23,28 @@ function parseCSV(text) {
       continue;
     }
 
+    let isAvailable = true;
+    if (statusIdx !== -1 && values[statusIdx] !== undefined) {
+      const statusVal = values[statusIdx].trim().toLowerCase();
+      if (
+        statusVal.includes('غير') || 
+        statusVal.includes('لا') || 
+        statusVal.includes('نفذ') || 
+        statusVal.includes('خلص') || 
+        statusVal === 'out' || 
+        statusVal === 'false' || 
+        statusVal === '0'
+      ) {
+        isAvailable = false;
+      }
+    }
+
     rows.push({
       category: values[categoryIdx] || 'أخرى',
       name: values[nameIdx],
       weight: rawWeight ? `${rawWeight} جرام` : 'حسب الطلب',
-      price: parseFloat(values[priceIdx]) || 0
+      price: parseFloat(values[priceIdx]) || 0,
+      available: isAvailable
     });
   }
 
@@ -43,11 +61,20 @@ function parseCSV(text) {
     }
     productsMap[key].variants.push({
       weight: item.weight,
-      price: item.price
+      price: item.price,
+      available: item.available
     });
   });
 
-  return Object.values(productsMap);
+  const productList = Object.values(productsMap).map(product => {
+    const hasAnyAvailable = product.variants.some(v => v.available);
+    return {
+      ...product,
+      isAvailable: hasAnyAvailable
+    };
+  });
+
+  return productList;
 }
 
 export async function GET() {
