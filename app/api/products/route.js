@@ -13,6 +13,7 @@ function parseCSV(text) {
   const weightIdx = headers.findIndex(h => h.includes('وزن') || h.includes('حجم'));
   const priceIdx = headers.findIndex(h => h.includes('سعر') || h.includes('ثمن'));
   
+  // البحث عن عمود التوفر أو الحالة بأي مسمى
   let statusIdx = headers.findIndex(h => 
     h.includes('حالة') || 
     h.includes('توفر') || 
@@ -23,21 +24,10 @@ function parseCSV(text) {
     h.includes('التوفر')
   );
 
-  // إذا لم يتعرف على اسم العمود مباشرة، يبحث عن العمود الذي يحتوي على كلمة متوفر أو غير متوفر
-  if (statusIdx === -1) {
-    for (let r = 1; r < Math.min(lines.length, 6); r++) {
-      const vals = lines[r].split(',').map(v => v.trim().replace(/^["']|["']$/g, ''));
-      const foundCol = vals.findIndex(v => v.includes('متوفر') || v.includes('متاح') || v.includes('غير'));
-      if (foundCol !== -1) {
-        statusIdx = foundCol;
-        break;
-      }
-    }
-  }
-
   const rows = [];
   for (let i = 1; i < lines.length; i++) {
-    const values = lines[i].split(',').map(v => v.trim().replace(/^["']|["']$/g, ''));
+    // التعامل مع الفواصل داخل النصوص
+    const values = lines[i].split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/).map(v => v.trim().replace(/^["']|["']$/g, ''));
     if (!values[nameIdx] || !values[priceIdx]) continue;
 
     const rawWeight = values[weightIdx] ? values[weightIdx].trim() : '';
@@ -45,7 +35,10 @@ function parseCSV(text) {
       continue;
     }
 
+    // التحقق من حالة التوفر
     let isAvailable = true;
+    
+    // فحص العمود المكتشف أو فحص كل الحقول للسطر
     if (statusIdx !== -1 && values[statusIdx] !== undefined) {
       const statusVal = values[statusIdx].trim();
       if (
@@ -57,6 +50,12 @@ function parseCSV(text) {
         statusVal.toLowerCase() === 'false' || 
         statusVal === '0'
       ) {
+        isAvailable = false;
+      }
+    } else {
+      // بحث شامل في كل قيم الصف عن كلمة "غير متوفر"
+      const rowText = lines[i];
+      if (rowText.includes('غير متوفر') || rowText.includes('غير متاح') || rowText.includes('نفذ')) {
         isAvailable = false;
       }
     }
@@ -97,7 +96,9 @@ function parseCSV(text) {
 export async function GET() {
   try {
     const sheetUrl = process.env.GOOGLE_SHEET_CSV_URL || "https://docs.google.com/spreadsheets/d/e/2PACX-1vS0KMamBEhCgLLWA4TEsYLz9uvxBE-EShQ0kBON0tYut-dZrBm4BDfuDgf23rD4KlWTt_PgCf--4vQz/pub?output=csv";
-    const urlWithCacheBust = sheetUrl + (sheetUrl.includes('?') ? '&' : '?') + 't=' + Date.now();
+    
+    // منع التخزين المؤقت لجلب التعديلات فوراً
+    const urlWithCacheBust = sheetUrl + (sheetUrl.includes('?') ? '&' : '?') + 'timestamp=' + Date.now();
     
     const res = await fetch(urlWithCacheBust, {
       cache: 'no-store',
