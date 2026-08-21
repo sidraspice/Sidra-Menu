@@ -23,7 +23,7 @@ function parseCSV(text) {
     h.includes('التوفر')
   );
 
-  // البحث التلقائي عن العمود الذي يحتوي على قيم متوفر / غير متوفر
+  // إذا لم يتعرف على اسم العمود مباشرة، يبحث عن العمود الذي يحتوي على كلمة متوفر أو غير متوفر
   if (statusIdx === -1) {
     for (let r = 1; r < Math.min(lines.length, 6); r++) {
       const vals = lines[r].split(',').map(v => v.trim().replace(/^["']|["']$/g, ''));
@@ -48,7 +48,6 @@ function parseCSV(text) {
     let isAvailable = true;
     if (statusIdx !== -1 && values[statusIdx] !== undefined) {
       const statusVal = values[statusIdx].trim();
-      // التحقق من حالة "غير متوفر" أو مشتقاتها
       if (
         statusVal.includes('غير') || 
         statusVal.includes('لا') || 
@@ -98,8 +97,6 @@ function parseCSV(text) {
 export async function GET() {
   try {
     const sheetUrl = process.env.GOOGLE_SHEET_CSV_URL || "https://docs.google.com/spreadsheets/d/e/2PACX-1vS0KMamBEhCgLLWA4TEsYLz9uvxBE-EShQ0kBON0tYut-dZrBm4BDfuDgf23rD4KlWTt_PgCf--4vQz/pub?output=csv";
-    
-    // منع التخزين المؤقت لجلب أحدث حالة من Google Sheets فوراً
     const urlWithCacheBust = sheetUrl + (sheetUrl.includes('?') ? '&' : '?') + 't=' + Date.now();
     
     const res = await fetch(urlWithCacheBust, {
@@ -129,7 +126,7 @@ export async function GET() {
     console.error('Data Fetch Error:', error);
     return NextResponse.json({
       success: false,
-      error: 'تعذر تحميل قائمة المنتجات حاليًا. يرجى المحاولة مرة أخرى.'
+      error: 'تعذر تحميل قائمة المنتجات حاليًا.'
     }, { status: 500 });
   }
 }
