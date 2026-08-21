@@ -165,6 +165,7 @@ export default function Home() {
     }
   };
 
+  // WhatsApp Order with Total Weight & Total Price per Item
   const handleSendWhatsAppOrder = () => {
     let message = `*طلب جديد - عطارة سدرة بدمنهور*\n\n`;
     message += `*بيانات العميل:*\n`;
@@ -179,7 +180,6 @@ export default function Home() {
     cart.forEach((item, index) => {
       const itemTotal = (item.price * item.qty).toFixed(2);
       
-      // استخراج الرقم من نص الوزن (مثل: "1 جرام" أو "50 جرام") وحساب الإجمالي
       const numMatch = item.weight.match(/\d+(\.\d+)?/);
       let totalWeightStr = item.weight;
 
@@ -285,7 +285,7 @@ export default function Home() {
           </div>
         )}
 
-        {/* Products Grid */}
+        {/* Products Grid with Availability Tags */}
         {!loading && !error && (
           <div>
             <div className="flex justify-between items-center mb-2.5">
@@ -302,7 +302,7 @@ export default function Home() {
                   className={`bg-white rounded-2xl p-3 border shadow-2xs flex flex-col justify-between transition ${
                     product.isAvailable
                       ? 'border-brand-border cursor-pointer hover:shadow-sm active:scale-[0.98]'
-                      : 'border-slate-200 opacity-60 cursor-not-allowed bg-slate-50/70'
+                      : 'border-slate-200 opacity-65 cursor-not-allowed bg-slate-50/70'
                   }`}
                 >
                   <div>
