@@ -1,8 +1,8 @@
 import './globals.css';
 
 export const metadata = {
-  title: 'عطارة سدرة بدمنهور | القائمة الرسمية',
-  description: 'بهارات وتوابل وأعشاب مختارة بعناية — طحن وتجهيز حسب الطلب',
+  title: 'عطارة سدرة بدمنهور',
+  description: 'عطارة سدرة بدمنهور',
 };
 
 export default function RootLayout({ children }) {

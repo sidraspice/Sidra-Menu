@@ -193,8 +193,8 @@ export default function Home() {
   return (
     <div className="min-h-screen pb-32 text-slate-800 selection:bg-brand-accent selection:text-white bg-[#fbf9f4]">
       {/* Compact Clean Header (No Big Green Background) */}
-      <header className="pt-4 pb-3 px-4 text-center max-w-xl mx-auto flex flex-col items-center">
-        <div className="w-20 h-20 sm:w-24 sm:h-24 flex items-center justify-center mb-1.5">
+      <header className="pt-4 pb-2 px-4 text-center max-w-xl mx-auto flex flex-col items-center">
+        <div className="w-24 h-24 sm:w-28 sm:h-28 flex items-center justify-center mb-1">
           <img 
             src="/logo.png" 
             alt="عطارة سدرة بدمنهور" 
@@ -487,7 +487,7 @@ export default function Home() {
                             className="w-6.5 h-6.5 bg-red-50 hover:bg-red-100 rounded-lg flex items-center justify-center text-red-500 mr-1"
                             title="حذف"
                           >
-                            <Trash2 className="w-3 h-3" />
+                            <Trash2 className="w-3.5 h-3.5" />
                           </button>
                         </div>
                       </div>

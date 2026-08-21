@@ -17,10 +17,15 @@ function parseCSV(text) {
     const values = lines[i].split(',').map(v => v.trim().replace(/^[\"\']|[\"\']$/g, ''));
     if (!values[nameIdx] || !values[priceIdx]) continue;
 
+    const rawWeight = values[weightIdx] ? values[weightIdx].trim() : '';
+    if (rawWeight === '1000' || rawWeight === '1000g' || rawWeight === '1 كجم' || rawWeight === '1كجم' || rawWeight === '1 كيلو' || rawWeight === 'كيلو') {
+      continue;
+    }
+
     rows.push({
       category: values[categoryIdx] || 'أخرى',
       name: values[nameIdx],
-      weight: values[weightIdx] ? `${values[weightIdx]} جرام` : 'حسب الطلب',
+      weight: rawWeight ? `${rawWeight} جرام` : 'حسب الطلب',
       price: parseFloat(values[priceIdx]) || 0
     });
   }
@@ -59,7 +64,8 @@ export async function GET() {
 
     const csvData = await res.text();
     const products = parseCSV(csvData);
-    const categories = ['كل المنتجات', ...new Set(products.map(p => p.category))];
+    const rawCategories = Array.from(new Set(products.map(p => p.category))).filter(Boolean);
+    const categories = ['كل المنتجات', ...rawCategories];
 
     return NextResponse.json({
       success: true,
