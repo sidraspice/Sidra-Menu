@@ -3,7 +3,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { 
   Search, ShoppingBag, Plus, Minus, Trash2, RefreshCw, X, Check, Phone, 
-  ArrowRight, User, MapPin, FileText, AlertCircle, ChevronRight, Sparkles, ShieldCheck 
+  ArrowRight, User, MapPin, FileText, AlertCircle, ChevronRight, Sparkles, ShieldCheck, Ban 
 } from 'lucide-react';
 
 const WHATSAPP_NUMBER = "201044760160";
@@ -88,12 +88,13 @@ export default function Home() {
 
   const openProductModal = (product) => {
     setActiveModalProduct(product);
-    setSelectedVariant(product.variants[0] || null);
+    const firstAvailable = product.variants.find(v => v.available) || product.variants[0] || null;
+    setSelectedVariant(firstAvailable);
     setModalQty(1);
   };
 
   const addToCart = () => {
-    if (!activeModalProduct || !selectedVariant) return;
+    if (!activeModalProduct || !selectedVariant || !selectedVariant.available) return;
     const itemKey = `${activeModalProduct.id}_${selectedVariant.weight}`;
     setCart(prev => {
       const exists = prev.find(i => i.key === itemKey);
@@ -215,7 +216,6 @@ export default function Home() {
 
       {/* Main Container with Sticky Search & Categories Navigation */}
       <main className="max-w-xl mx-auto px-4 mt-2">
-        {/* STICKY BAR: Search + Categories stay fixed at the top during scroll */}
         <div className="sticky top-0 z-30 bg-[#fbf9f4]/95 backdrop-blur-md pt-2 pb-2.5 -mx-4 px-4 border-b border-brand-border/40 shadow-xs mb-3">
           {/* Search Bar */}
           <div className="bg-white rounded-2xl shadow-xs p-2 flex items-center gap-2 border border-brand-border mb-2">
@@ -234,7 +234,7 @@ export default function Home() {
             )}
           </div>
 
-          {/* Categories Grid (Sticky with clean compact grid) */}
+          {/* Categories Grid */}
           {!loading && !error && data.categories.length > 0 && (
             <div className="grid grid-cols-3 sm:grid-cols-4 gap-1.5 max-h-[140px] overflow-y-auto pr-0.5 scrollbar-thin">
               {data.categories.map(cat => (
@@ -287,13 +287,24 @@ export default function Home() {
               {filteredProducts.map(product => (
                 <div
                   key={product.id}
-                  onClick={() => openProductModal(product)}
-                  className="bg-white rounded-2xl p-3 border border-brand-border shadow-2xs flex flex-col justify-between cursor-pointer hover:shadow-sm transition active:scale-[0.98]"
+                  onClick={() => product.isAvailable && openProductModal(product)}
+                  className={`bg-white rounded-2xl p-3 border shadow-2xs flex flex-col justify-between transition ${
+                    product.isAvailable
+                      ? 'border-brand-border cursor-pointer hover:shadow-sm active:scale-[0.98]'
+                      : 'border-slate-200 opacity-60 cursor-not-allowed bg-slate-50/70'
+                  }`}
                 >
                   <div>
-                    <span className="text-[10px] text-brand-accent font-bold bg-[#fbf9f4] px-1.5 py-0.5 rounded border border-brand-border inline-block mb-1">
-                      {product.category}
-                    </span>
+                    <div className="flex justify-between items-center mb-1">
+                      <span className="text-[10px] text-brand-accent font-bold bg-[#fbf9f4] px-1.5 py-0.5 rounded border border-brand-border inline-block">
+                        {product.category}
+                      </span>
+                      {!product.isAvailable && (
+                        <span className="text-[9px] font-bold text-red-600 bg-red-50 px-1.5 py-0.5 rounded border border-red-200">
+                          غير متاح
+                        </span>
+                      )}
+                    </div>
                     <h3 className="font-bold text-xs sm:text-sm text-brand-dark mb-2 line-clamp-2 leading-snug">
                       {product.name}
                     </h3>
@@ -303,14 +314,22 @@ export default function Home() {
                     <div className="text-[11px] text-slate-500 font-semibold mb-2.5">
                       {product.variants.map((v, i) => (
                         <div key={i} className="flex justify-between items-center py-0.5 border-t border-slate-50">
-                          <span>{v.weight}</span>
-                          <span className="font-bold text-brand-primary">{v.price} ج.م</span>
+                          <span className={!v.available ? 'line-through text-slate-400' : ''}>{v.weight}</span>
+                          <span className={`font-bold ${v.available ? 'text-brand-primary' : 'text-slate-400 text-[10px]'}`}>
+                            {v.available ? `${v.price} ج.م` : 'نفذ'}
+                          </span>
                         </div>
                       ))}
                     </div>
-                    <button className="w-full bg-brand-primary text-white text-xs py-2 rounded-xl font-bold flex items-center justify-center gap-1 shadow-2xs hover:bg-brand-dark transition">
-                      <Plus className="w-3.5 h-3.5" /> اختيار
-                    </button>
+                    {product.isAvailable ? (
+                      <button className="w-full bg-brand-primary text-white text-xs py-2 rounded-xl font-bold flex items-center justify-center gap-1 shadow-2xs hover:bg-brand-dark transition">
+                        <Plus className="w-3.5 h-3.5" /> اختيار
+                      </button>
+                    ) : (
+                      <button disabled className="w-full bg-slate-200 text-slate-500 text-xs py-2 rounded-xl font-bold flex items-center justify-center gap-1 cursor-not-allowed">
+                        <Ban className="w-3 h-3" /> غير متوفر
+                      </button>
+                    )}
                   </div>
                 </div>
               ))}
@@ -371,15 +390,23 @@ export default function Home() {
                 {activeModalProduct.variants.map((variant, idx) => (
                   <button
                     key={idx}
+                    disabled={!variant.available}
                     onClick={() => setSelectedVariant(variant)}
                     className={`p-2.5 rounded-xl border text-right transition ${
-                      selectedVariant?.weight === variant.weight
-                        ? 'border-brand-primary bg-brand-primary/5 text-brand-dark font-bold ring-2 ring-brand-primary/20'
-                        : 'border-slate-200 text-slate-700'
+                      !variant.available 
+                        ? 'opacity-40 bg-slate-100 border-slate-200 cursor-not-allowed'
+                        : selectedVariant?.weight === variant.weight
+                          ? 'border-brand-primary bg-brand-primary/5 text-brand-dark font-bold ring-2 ring-brand-primary/20'
+                          : 'border-slate-200 text-slate-700'
                     }`}
                   >
-                    <div className="text-xs font-bold">{variant.weight}</div>
-                    <div className="text-xs font-black text-brand-primary mt-0.5">{variant.price} ج.م</div>
+                    <div className="flex justify-between items-center">
+                      <span className="text-xs font-bold">{variant.weight}</span>
+                      {!variant.available && <span className="text-[9px] text-red-500 font-bold">غير متاح</span>}
+                    </div>
+                    <div className="text-xs font-black text-brand-primary mt-0.5">
+                      {variant.available ? `${variant.price} ج.م` : 'غير متوفر'}
+                    </div>
                   </button>
                 ))}
               </div>
@@ -405,10 +432,13 @@ export default function Home() {
             </div>
 
             <button
+              disabled={!selectedVariant || !selectedVariant.available}
               onClick={addToCart}
-              className="w-full bg-brand-primary text-white py-3 rounded-xl font-bold text-xs shadow-md hover:bg-brand-dark transition"
+              className="w-full bg-brand-primary disabled:opacity-50 disabled:cursor-not-allowed text-white py-3 rounded-xl font-bold text-xs shadow-md hover:bg-brand-dark transition"
             >
-              إضافة للسلة — {((selectedVariant?.price || 0) * modalQty).toFixed(2)} ج.م
+              {selectedVariant?.available 
+                ? `إضافة للسلة — ${((selectedVariant?.price || 0) * modalQty).toFixed(2)} ج.م` 
+                : 'هذا الوزن غير متاح حالياً'}
             </button>
           </div>
         </div>
