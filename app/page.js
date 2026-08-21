@@ -203,7 +203,7 @@ export default function Home() {
 
   return (
     <div className="min-h-screen pb-32 text-slate-800 selection:bg-brand-accent selection:text-white bg-[#fbf9f4]">
-      {/* Top Logo Banner */}
+      {/* Top Logo Banner (يختفي عند التمرير لأسفل) */}
       <header className="pt-3 pb-1 px-4 max-w-xl mx-auto flex flex-col items-center justify-center">
         <div className="relative w-full max-w-[320px] sm:max-w-[380px] bg-white rounded-3xl p-3 shadow-xs border border-brand-border/60 flex flex-col items-center">
           <div className="w-full aspect-[4/3] flex items-center justify-center">
@@ -224,37 +224,36 @@ export default function Home() {
         </div>
       </header>
 
-      {/* Main Container */}
-      <main className="max-w-xl mx-auto px-4 mt-2">
-        {/* Search Bar */}
-        <div className="bg-white rounded-2xl shadow-xs p-2 flex items-center gap-2 border border-brand-border mb-3">
-          <Search className="w-4 h-4 text-brand-light mr-1.5 shrink-0" />
-          <input
-            type="text"
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            placeholder="ابحث عن منتج..."
-            className="w-full bg-transparent focus:outline-none text-xs sm:text-sm font-semibold text-brand-dark"
-          />
-          {search && (
-            <button onClick={() => setSearch('')} className="p-1 text-slate-400 hover:text-slate-600">
-              <X className="w-3.5 h-3.5" />
-            </button>
-          )}
-        </div>
+      {/* Main Container with Fully Fixed/Sticky Navigation */}
+      <main className="max-w-xl mx-auto px-4 mt-1">
+        
+        {/* الشريط المثبت في أعلى الشاشة: البحث + كامل التصنيفات ظاهرة دون اختفاء */}
+        <div className="sticky top-0 z-30 bg-[#fbf9f4]/98 backdrop-blur-md pt-2 pb-2.5 -mx-4 px-4 border-b border-brand-border/50 shadow-xs mb-3">
+          {/* Search Bar */}
+          <div className="bg-white rounded-2xl shadow-xs p-2 flex items-center gap-2 border border-brand-border mb-2">
+            <Search className="w-4 h-4 text-brand-light mr-1.5 shrink-0" />
+            <input
+              type="text"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              placeholder="ابحث عن منتج..."
+              className="w-full bg-transparent focus:outline-none text-xs sm:text-sm font-semibold text-brand-dark"
+            />
+            {search && (
+              <button onClick={() => setSearch('')} className="p-1 text-slate-400 hover:text-slate-600">
+                <X className="w-3.5 h-3.5" />
+              </button>
+            )}
+          </div>
 
-        {/* All Categories Fully Visible Grid (Clean & Fits Perfectly) */}
-        {!loading && !error && data.categories.length > 0 && (
-          <div className="mb-4">
-            <div className="text-xs font-black text-brand-dark mb-2 flex items-center gap-1.5">
-              <span>الأقسام والتصنيفات</span>
-            </div>
+          {/* All Categories Fixed & Fully Visible in Grid */}
+          {!loading && !error && data.categories.length > 0 && (
             <div className="grid grid-cols-3 sm:grid-cols-4 gap-1.5">
               {data.categories.map(cat => (
                 <button
                   key={cat}
                   onClick={() => setSelectedCategory(cat)}
-                  className={`p-2 rounded-xl text-[11px] font-bold transition-all text-center flex items-center justify-center min-h-[38px] leading-tight active:scale-95 ${
+                  className={`p-1.5 sm:p-2 rounded-xl text-[11px] font-bold transition-all text-center flex items-center justify-center min-h-[36px] leading-tight active:scale-95 ${
                     selectedCategory === cat
                       ? 'bg-brand-primary text-white shadow-sm ring-2 ring-brand-primary/20 font-black'
                       : 'bg-white text-brand-dark border border-brand-border hover:bg-slate-50'
@@ -264,8 +263,8 @@ export default function Home() {
                 </button>
               ))}
             </div>
-          </div>
-        )}
+          )}
+        </div>
 
         {/* Loading / Error States */}
         {loading && (
