@@ -255,7 +255,7 @@ export default function Home() {
         </div>
       </header>
 
-      {/* Main Container with Sticky Search & Modern Visual Categories */}
+      {/* Main Container */}
       <main className="max-w-xl mx-auto px-4 mt-2">
         
         {/* Sticky Search & Icon Categories */}
@@ -277,7 +277,7 @@ export default function Home() {
             )}
           </div>
 
-          {/* Chic & Visual Categories Grid with Modern Emojis/Icons */}
+          {/* Categories Grid */}
           {!loading && !error && data.categories.length > 0 && (
             <div className="grid grid-cols-3 sm:grid-cols-4 gap-1.5 sm:gap-2">
               {data.categories.map(cat => {
@@ -587,7 +587,7 @@ export default function Home() {
                             onClick={() => updateCartQty(item.key, 1)}
                             className="w-6.5 h-6.5 bg-slate-100 hover:bg-slate-200 rounded-lg flex items-center justify-center text-slate-700 font-bold"
                           >
-                            <Plus className="w-3.5 h-3.5" />
+                            <Plus className="w-3 h-3" />
                           </button>
                           <button
                             onClick={() => removeCartItem(item.key)}
