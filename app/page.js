@@ -203,10 +203,10 @@ export default function Home() {
 
   return (
     <div className="min-h-screen pb-32 text-slate-800 selection:bg-brand-accent selection:text-white bg-[#fbf9f4]">
-      {/* Top Logo Banner (يختفي عند التمرير لأسفل) */}
-      <header className="pt-3 pb-1 px-4 max-w-xl mx-auto flex flex-col items-center justify-center">
-        <div className="relative w-full max-w-[320px] sm:max-w-[380px] bg-white rounded-3xl p-3 shadow-xs border border-brand-border/60 flex flex-col items-center">
-          <div className="w-full aspect-[4/3] flex items-center justify-center">
+      {/* Top Logo Banner with Larger & Bolder Guarantee Text */}
+      <header className="pt-2 pb-0 px-4 max-w-xl mx-auto flex flex-col items-center justify-center">
+        <div className="relative w-full max-w-[320px] sm:max-w-[360px] bg-white rounded-3xl p-2.5 shadow-xs border border-brand-border/60 flex flex-col items-center">
+          <div className="w-full aspect-[4/3] max-h-[165px] flex items-center justify-center">
             <img 
               src="/logo.png" 
               alt="عطارة سدرة بدمنهور" 
@@ -214,9 +214,10 @@ export default function Home() {
             />
           </div>
           
-          <div className="w-[96%] -mt-3 mb-1 py-2 px-3 rounded-2xl bg-gradient-to-r from-[#1e382b] via-[#2d533e] to-[#1e382b] border-2 border-[#e0a948] shadow-md flex items-center justify-center gap-2">
+          {/* Bigger Font Size for Guarantee Badge Without Expanding Banner */}
+          <div className="w-[98%] -mt-1 mb-0.5 py-1.5 px-2 rounded-2xl bg-gradient-to-r from-[#1e382b] via-[#2d533e] to-[#1e382b] border-2 border-[#e0a948] shadow-md flex items-center justify-center gap-1.5">
             <Sparkles className="w-4 h-4 text-[#e0a948] shrink-0 animate-pulse" />
-            <span className="text-xs sm:text-sm font-black text-amber-100 tracking-wide drop-shadow-xs text-center">
+            <span className="text-sm sm:text-[15px] font-black text-amber-100 tracking-normal drop-shadow-xs text-center leading-tight">
               ما تدفعش ولا جنيه غير بعد المعاينة
             </span>
             <ShieldCheck className="w-4 h-4 text-[#e0a948] shrink-0" />
@@ -227,7 +228,7 @@ export default function Home() {
       {/* Main Container with Fully Fixed/Sticky Navigation */}
       <main className="max-w-xl mx-auto px-4 mt-1">
         
-        {/* الشريط المثبت في أعلى الشاشة: البحث + كامل التصنيفات ظاهرة دون اختفاء */}
+        {/* Sticky Search & Categories Grid */}
         <div className="sticky top-0 z-30 bg-[#fbf9f4]/98 backdrop-blur-md pt-2 pb-2.5 -mx-4 px-4 border-b border-brand-border/50 shadow-xs mb-3">
           {/* Search Bar */}
           <div className="bg-white rounded-2xl shadow-xs p-2 flex items-center gap-2 border border-brand-border mb-2">
