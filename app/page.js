@@ -3,10 +3,30 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { 
   Search, ShoppingBag, Plus, Minus, Trash2, RefreshCw, X, Check, Phone, 
-  ArrowRight, User, MapPin, FileText, AlertCircle, ChevronRight, Sparkles, ShieldCheck, Ban 
+  ArrowRight, User, MapPin, FileText, AlertCircle, ChevronRight, Sparkles, ShieldCheck, Ban,
+  Flame, Leaf, Coffee, Cake, HeartPulse, Wheat, Grid, Sparkle
 } from 'lucide-react';
 
 const WHATSAPP_NUMBER = "201044760160";
+
+// خريطة أيقونات ذكية وواضحة ومعروفة لكل قسم
+const getCategoryVisual = (catName) => {
+  const name = catName.trim().toLowerCase();
+  if (name.includes('كل')) return { icon: '✨', label: 'الكل' };
+  if (name.includes('اعشاب') || name.includes('أعشاب')) return { icon: '🌿', label: 'أعشاب' };
+  if (name.includes('خلطات') || name.includes('توابل')) return { icon: '🌶️', label: 'خلطات وتوابل' };
+  if (name.includes('مشروبات') || name.includes('شاي') || name.includes('قهوة')) return { icon: '☕', label: 'مشروبات' };
+  if (name.includes('بذور') || name.includes('مكملات')) return { icon: '🌾', label: 'بذور ومكملات' };
+  if (name.includes('مجفف')) return { icon: '🍋', label: 'مجففات' };
+  if (name.includes('متنوعة') || name.includes('متنوعه')) return { icon: '🫙', label: 'بهارات متنوعة' };
+  if (name.includes('حلواني') || name.includes('حلوانى')) return { icon: '🍰', label: 'لوازم حلواني' };
+  if (name.includes('علاج') || name.includes('خاص')) return { icon: '🍯', label: 'خاصة وعلاجية' };
+  if (name.includes('بلدى') || name.includes('بلدي')) return { icon: '🧂', label: 'بهارات بلدي' };
+  if (name.includes('زيوت')) return { icon: '🧴', label: 'زيوت طبيعية' };
+  if (name.includes('عسل')) return { icon: '🍯', label: 'عسل ومنتجاته' };
+  if (name.includes('تمور') || name.includes('ياميش')) return { icon: '🌴', label: 'تمور وياميش' };
+  return { icon: '🍃', label: catName };
+};
 
 export default function Home() {
   const [data, setData] = useState({ products: [], categories: [] });
@@ -233,10 +253,10 @@ export default function Home() {
         </div>
       </header>
 
-      {/* Main Container with Sticky Navigation */}
+      {/* Main Container with Sticky Search & Modern Visual Categories */}
       <main className="max-w-xl mx-auto px-4 mt-2">
         
-        {/* Sticky Search & Luxury Categories */}
+        {/* Sticky Search & Icon Categories */}
         <div className="sticky top-0 z-30 bg-[#fbf9f4]/98 backdrop-blur-md pt-2 pb-2.5 -mx-4 px-4 border-b border-[#e8e2d5] shadow-xs mb-3">
           {/* Search Bar */}
           <div className="bg-white rounded-2xl shadow-xs p-2 flex items-center gap-2 border border-[#e8e2d5] mb-2.5">
@@ -245,7 +265,7 @@ export default function Home() {
               type="text"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              placeholder="ابحث عن منتج..."
+              placeholder="ابحث عن منتج بالاسم..."
               className="w-full bg-transparent focus:outline-none text-xs sm:text-sm font-semibold text-[#1e382b]"
             />
             {search && (
@@ -255,11 +275,12 @@ export default function Home() {
             )}
           </div>
 
-          {/* Luxury Arabesque Categories Grid */}
+          {/* Chic & Visual Categories Grid with Modern Emojis/Icons */}
           {!loading && !error && data.categories.length > 0 && (
-            <div className="grid grid-cols-3 sm:grid-cols-4 gap-2">
+            <div className="grid grid-cols-3 sm:grid-cols-4 gap-1.5 sm:gap-2">
               {data.categories.map(cat => {
                 const isSelected = selectedCategory === cat;
+                const visual = getCategoryVisual(cat);
                 return (
                   <button
                     key={cat}
@@ -267,28 +288,38 @@ export default function Home() {
                     style={
                       isSelected
                         ? {
-                            background: 'linear-gradient(135deg, #1b3d2b 0%, #10261a 100%)',
+                            background: 'linear-gradient(135deg, #1b3d2b 0%, #0e2417 100%)',
                             border: '2px solid #d4af37',
-                            color: '#fff8e7',
-                            boxShadow: '0 4px 12px rgba(212, 175, 55, 0.3), inset 0 1px 1px rgba(255,255,255,0.2)',
+                            color: '#fff9ea',
+                            boxShadow: '0 4px 10px rgba(212, 175, 55, 0.35)',
                             transform: 'scale(1.02)'
                           }
                         : {
-                            background: 'linear-gradient(180deg, #ffffff 0%, #faf6ee 100%)',
-                            border: '1.5px solid #decfae',
+                            background: '#ffffff',
+                            border: '1.5px solid #e2d9c8',
                             color: '#1b3828',
-                            boxShadow: '0 2px 4px rgba(0,0,0,0.03)'
+                            boxShadow: '0 2px 5px rgba(0,0,0,0.03)'
                           }
                     }
-                    className="relative px-2 py-2.5 rounded-2xl text-[11px] font-black transition-all duration-200 text-center flex items-center justify-center min-h-[42px] leading-tight active:scale-95"
+                    className="relative px-2 py-1.5 rounded-2xl transition-all duration-200 flex flex-col items-center justify-center min-h-[46px] active:scale-95 text-center group"
                   >
+                    {/* Glowing Accent Dot for Selected Category */}
                     {isSelected && (
                       <span 
-                        style={{ background: '#d4af37', border: '2px solid #ffffff' }} 
-                        className="absolute -top-1 -right-1 w-3 h-3 rounded-full shadow-xs"
+                        style={{ background: '#d4af37' }} 
+                        className="absolute -top-1 -right-1 w-2.5 h-2.5 rounded-full ring-2 ring-white animate-ping"
                       ></span>
                     )}
-                    <span className="truncate">{cat}</span>
+                    
+                    {/* Visual Icon */}
+                    <span className="text-base sm:text-lg mb-0.5 leading-none select-none">
+                      {visual.icon}
+                    </span>
+                    
+                    {/* Category Label */}
+                    <span className={`text-[10px] sm:text-[11px] font-black leading-tight truncate max-w-[95%] ${isSelected ? 'text-[#fff4d6]' : 'text-[#1e382b]'}`}>
+                      {cat}
+                    </span>
                   </button>
                 );
               })}
