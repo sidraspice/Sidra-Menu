@@ -165,7 +165,6 @@ export default function Home() {
     }
   };
 
-  // WhatsApp Order with Total Weight & Total Price per Item
   const handleSendWhatsAppOrder = () => {
     let message = `*طلب جديد - عطارة سدرة بدمنهور*\n\n`;
     message += `*بيانات العميل:*\n`;
@@ -312,7 +311,7 @@ export default function Home() {
                       </span>
                       {!product.isAvailable && (
                         <span className="text-[9px] font-bold text-red-600 bg-red-50 px-1.5 py-0.5 rounded border border-red-200">
-                          غير متاح
+                          غير متوفر
                         </span>
                       )}
                     </div>
@@ -326,8 +325,8 @@ export default function Home() {
                       {product.variants.map((v, i) => (
                         <div key={i} className="flex justify-between items-center py-0.5 border-t border-slate-50">
                           <span className={!v.available ? 'line-through text-slate-400' : ''}>{v.weight}</span>
-                          <span className={`font-bold ${v.available ? 'text-brand-primary' : 'text-slate-400 text-[10px]'}`}>
-                            {v.available ? `${v.price} ج.م` : 'نفذ'}
+                          <span className={`font-bold ${v.available ? 'text-brand-primary' : 'text-red-500 text-[10px]'}`}>
+                            {v.available ? `${v.price} ج.م` : 'غير متوفر'}
                           </span>
                         </div>
                       ))}
@@ -413,7 +412,7 @@ export default function Home() {
                   >
                     <div className="flex justify-between items-center">
                       <span className="text-xs font-bold">{variant.weight}</span>
-                      {!variant.available && <span className="text-[9px] text-red-500 font-bold">غير متاح</span>}
+                      {!variant.available && <span className="text-[9px] text-red-500 font-bold">غير متوفر</span>}
                     </div>
                     <div className="text-xs font-black text-brand-primary mt-0.5">
                       {variant.available ? `${variant.price} ج.م` : 'غير متوفر'}
@@ -449,7 +448,7 @@ export default function Home() {
             >
               {selectedVariant?.available 
                 ? `إضافة للسلة — ${((selectedVariant?.price || 0) * modalQty).toFixed(2)} ج.م` 
-                : 'هذا الوزن غير متاح حالياً'}
+                : 'هذا الوزن غير متوفر حالياً'}
             </button>
           </div>
         </div>
