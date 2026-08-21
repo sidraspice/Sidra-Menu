@@ -3,7 +3,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { 
   Search, ShoppingBag, Plus, Minus, Trash2, RefreshCw, X, Check, Phone, 
-  ArrowRight, User, MapPin, FileText, AlertCircle, ChevronRight, ShieldCheck 
+  ArrowRight, User, MapPin, FileText, AlertCircle, ChevronRight, Sparkles, ShieldCheck 
 } from 'lucide-react';
 
 const WHATSAPP_NUMBER = "201044760160";
@@ -192,22 +192,26 @@ export default function Home() {
 
   return (
     <div className="min-h-screen pb-32 text-slate-800 selection:bg-brand-accent selection:text-white bg-[#fbf9f4]">
-      {/* Full-width Logo Header with Trust Badge */}
-      <header className="pt-4 pb-2 px-4 text-center max-w-xl mx-auto flex flex-col items-center justify-center">
-        <div className="w-full max-w-[280px] sm:max-w-[340px] aspect-[4/3] flex items-center justify-center">
-          <img 
-            src="/logo.png" 
-            alt="عطارة سدرة بدمنهور" 
-            className="w-full h-full object-contain"
-          />
-        </div>
-        
-        {/* Trust Guarantee Badge */}
-        <div className="mt-1 flex items-center justify-center gap-1.5 bg-[#2d533e]/10 border border-[#2d533e]/25 text-[#1e382b] py-1.5 px-4 rounded-full shadow-2xs">
-          <ShieldCheck className="w-4 h-4 text-[#2d533e]" />
-          <span className="text-xs sm:text-sm font-black tracking-wide">
-            ما تدفعش ولا جنيه غير بعد المعاينة
-          </span>
+      {/* Logo Container with Vibrant Bottom Badge */}
+      <header className="pt-3 pb-2 px-4 max-w-xl mx-auto flex flex-col items-center justify-center">
+        <div className="relative w-full max-w-[320px] sm:max-w-[380px] bg-white rounded-3xl p-3 shadow-xs border border-brand-border/60 flex flex-col items-center">
+          {/* Main Logo Image */}
+          <div className="w-full aspect-[4/3] flex items-center justify-center">
+            <img 
+              src="/logo.png" 
+              alt="عطارة سدرة بدمنهور" 
+              className="w-full h-full object-contain"
+            />
+          </div>
+          
+          {/* Prominent Colorful Arabic Guarantee Banner at the Bottom of Logo */}
+          <div className="w-[96%] -mt-3 mb-1 py-2 px-3 rounded-2xl bg-gradient-to-r from-[#1e382b] via-[#2d533e] to-[#1e382b] border-2 border-[#e0a948] shadow-md flex items-center justify-center gap-2">
+            <Sparkles className="w-4 h-4 text-[#e0a948] shrink-0 animate-pulse" />
+            <span className="text-sm sm:text-base font-black text-amber-100 tracking-wide drop-shadow-xs text-center">
+              ما تدفعش ولا جنيه غير بعد المعاينة
+            </span>
+            <ShieldCheck className="w-4 h-4 text-[#e0a948] shrink-0" />
+          </div>
         </div>
       </header>
 
