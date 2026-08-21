@@ -3,7 +3,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { 
   Search, ShoppingBag, Plus, Minus, Trash2, RefreshCw, X, Check, Phone, 
-  ArrowRight, User, MapPin, FileText, AlertCircle, ChevronRight 
+  ArrowRight, User, MapPin, FileText, AlertCircle, ChevronRight, ShieldCheck 
 } from 'lucide-react';
 
 const WHATSAPP_NUMBER = "201044760160";
@@ -192,19 +192,27 @@ export default function Home() {
 
   return (
     <div className="min-h-screen pb-32 text-slate-800 selection:bg-brand-accent selection:text-white bg-[#fbf9f4]">
-      {/* Full Width Banner Logo (No Text & Fills Screen) */}
-      <div className="w-full flex justify-center items-center bg-[#fbf9f4] pt-2 pb-2">
-        <div className="w-full max-w-xl px-2">
+      {/* Full-width Logo Header with Trust Badge */}
+      <header className="pt-4 pb-2 px-4 text-center max-w-xl mx-auto flex flex-col items-center justify-center">
+        <div className="w-full max-w-[280px] sm:max-w-[340px] aspect-[4/3] flex items-center justify-center">
           <img 
             src="/logo.png" 
             alt="عطارة سدرة بدمنهور" 
-            className="w-full h-auto max-h-[300px] object-contain mx-auto"
+            className="w-full h-full object-contain"
           />
         </div>
-      </div>
+        
+        {/* Trust Guarantee Badge */}
+        <div className="mt-1 flex items-center justify-center gap-1.5 bg-[#2d533e]/10 border border-[#2d533e]/25 text-[#1e382b] py-1.5 px-4 rounded-full shadow-2xs">
+          <ShieldCheck className="w-4 h-4 text-[#2d533e]" />
+          <span className="text-xs sm:text-sm font-black tracking-wide">
+            ما تدفعش ولا جنيه غير بعد المعاينة
+          </span>
+        </div>
+      </header>
 
       {/* Main Container */}
-      <main className="max-w-xl mx-auto px-4 mt-1">
+      <main className="max-w-xl mx-auto px-4 mt-2">
         {/* Search Bar */}
         <div className="bg-white rounded-2xl shadow-xs p-2.5 flex items-center gap-2 border border-brand-border mb-4">
           <Search className="w-5 h-5 text-brand-light mr-2 shrink-0" />
@@ -391,7 +399,7 @@ export default function Home() {
                   onClick={() => setModalQty(modalQty + 1)}
                   className="w-7 h-7 rounded-lg bg-white border border-brand-border flex items-center justify-center font-bold text-brand-dark shadow-2xs"
                 >
-                  <Plus className="w-3 h-3" />
+                  <Plus className="w-3.5 h-3.5" />
                 </button>
               </div>
             </div>
