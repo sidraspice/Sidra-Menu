@@ -203,30 +203,33 @@ export default function Home() {
 
   return (
     <div className="min-h-screen pb-32 text-slate-800 selection:bg-brand-accent selection:text-white bg-[#fbf9f4]">
-      {/* Top Logo Banner with Larger & Bolder Guarantee Text */}
+      {/* Top Logo Banner: Full Cover to Edges + Big Catchy Guarantee Badge */}
       <header className="pt-2 pb-0 px-4 max-w-xl mx-auto flex flex-col items-center justify-center">
-        <div className="relative w-full max-w-[320px] sm:max-w-[360px] bg-white rounded-3xl p-2.5 shadow-xs border border-brand-border/60 flex flex-col items-center">
-          <div className="w-full aspect-[4/3] max-h-[165px] flex items-center justify-center">
+        <div className="w-full max-w-[340px] sm:max-w-[380px] bg-white rounded-3xl p-1.5 sm:p-2 shadow-xs border border-brand-border/70 flex flex-col items-center">
+          
+          {/* Logo fills the entire container seamlessly */}
+          <div className="w-full aspect-[16/10] rounded-2xl overflow-hidden flex items-center justify-center bg-white">
             <img 
               src="/logo.png" 
               alt="عطارة سدرة بدمنهور" 
-              className="w-full h-full object-contain"
+              className="w-full h-full object-cover"
             />
           </div>
           
-          {/* Bigger Font Size for Guarantee Badge Without Expanding Banner */}
-          <div className="w-[98%] -mt-1 mb-0.5 py-1.5 px-2 rounded-2xl bg-gradient-to-r from-[#1e382b] via-[#2d533e] to-[#1e382b] border-2 border-[#e0a948] shadow-md flex items-center justify-center gap-1.5">
-            <Sparkles className="w-4 h-4 text-[#e0a948] shrink-0 animate-pulse" />
-            <span className="text-sm sm:text-[15px] font-black text-amber-100 tracking-normal drop-shadow-xs text-center leading-tight">
+          {/* Bigger, High-Contrast & Beautiful Guarantee Badge */}
+          <div className="w-full mt-2 mb-0.5 py-2 px-3 rounded-2xl bg-gradient-to-r from-[#173023] via-[#224432] to-[#173023] border-2 border-[#e0a948] shadow-md flex items-center justify-center gap-2">
+            <Sparkles className="w-5 h-5 text-[#e0a948] shrink-0 animate-pulse" />
+            <span className="text-[15px] sm:text-base font-black text-amber-100 tracking-wide drop-shadow-sm text-center leading-tight">
               ما تدفعش ولا جنيه غير بعد المعاينة
             </span>
-            <ShieldCheck className="w-4 h-4 text-[#e0a948] shrink-0" />
+            <ShieldCheck className="w-5 h-5 text-[#e0a948] shrink-0" />
           </div>
+
         </div>
       </header>
 
-      {/* Main Container with Fully Fixed/Sticky Navigation */}
-      <main className="max-w-xl mx-auto px-4 mt-1">
+      {/* Main Container with Sticky Search & Categories Navigation */}
+      <main className="max-w-xl mx-auto px-4 mt-2">
         
         {/* Sticky Search & Categories Grid */}
         <div className="sticky top-0 z-30 bg-[#fbf9f4]/98 backdrop-blur-md pt-2 pb-2.5 -mx-4 px-4 border-b border-brand-border/50 shadow-xs mb-3">
