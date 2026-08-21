@@ -3,7 +3,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { 
   Search, ShoppingBag, Plus, Minus, Trash2, RefreshCw, X, Check, Phone, 
-  ArrowRight, User, MapPin, FileText, AlertCircle, ChevronRight, Sparkles, ShieldCheck, Ban, Layers 
+  ArrowRight, User, MapPin, FileText, AlertCircle, ChevronRight, Sparkles, ShieldCheck, Ban 
 } from 'lucide-react';
 
 const WHATSAPP_NUMBER = "201044760160";
@@ -205,7 +205,7 @@ export default function Home() {
     <div className="min-h-screen pb-32 text-slate-800 selection:bg-brand-accent selection:text-white bg-[#fbf9f4]">
       {/* Top Logo Banner */}
       <header className="pt-2 pb-0 px-4 max-w-xl mx-auto flex flex-col items-center justify-center">
-        <div className="w-full max-w-[340px] sm:max-w-[380px] bg-white rounded-3xl p-1.5 sm:p-2 shadow-xs border border-brand-border/70 flex flex-col items-center">
+        <div className="w-full max-w-[340px] sm:max-w-[380px] bg-white rounded-3xl p-1.5 sm:p-2 shadow-xs border border-[#e8e2d5] flex flex-col items-center">
           
           <div className="w-full aspect-[16/10] rounded-2xl overflow-hidden flex items-center justify-center bg-white">
             <img 
@@ -215,31 +215,38 @@ export default function Home() {
             />
           </div>
           
-          <div className="w-full mt-2 mb-0.5 py-2 px-3 rounded-2xl bg-gradient-to-r from-[#173023] via-[#224432] to-[#173023] border-2 border-[#e0a948] shadow-md flex items-center justify-center gap-2">
-            <Sparkles className="w-5 h-5 text-[#e0a948] shrink-0 animate-pulse" />
-            <span className="text-[15px] sm:text-base font-black text-amber-100 tracking-wide drop-shadow-sm text-center leading-tight">
+          <div 
+            style={{
+              background: 'linear-gradient(135deg, #173023 0%, #224432 50%, #173023 100%)',
+              border: '2px solid #d4af37',
+              boxShadow: '0 4px 10px rgba(0,0,0,0.15)'
+            }}
+            className="w-full mt-2 mb-0.5 py-2 px-3 rounded-2xl flex items-center justify-center gap-2"
+          >
+            <Sparkles className="w-5 h-5 text-[#d4af37] shrink-0 animate-pulse" />
+            <span className="text-[15px] sm:text-base font-black text-[#fff4d6] tracking-wide drop-shadow-sm text-center leading-tight">
               ما تدفعش ولا جنيه غير بعد المعاينة
             </span>
-            <ShieldCheck className="w-5 h-5 text-[#e0a948] shrink-0" />
+            <ShieldCheck className="w-5 h-5 text-[#d4af37] shrink-0" />
           </div>
 
         </div>
       </header>
 
-      {/* Main Container with Sticky Search & Luxury Categories Grid */}
+      {/* Main Container with Sticky Navigation */}
       <main className="max-w-xl mx-auto px-4 mt-2">
         
         {/* Sticky Search & Luxury Categories */}
-        <div className="sticky top-0 z-30 bg-[#fbf9f4]/98 backdrop-blur-md pt-2 pb-2.5 -mx-4 px-4 border-b border-brand-border/60 shadow-xs mb-3">
+        <div className="sticky top-0 z-30 bg-[#fbf9f4]/98 backdrop-blur-md pt-2 pb-2.5 -mx-4 px-4 border-b border-[#e8e2d5] shadow-xs mb-3">
           {/* Search Bar */}
-          <div className="bg-white rounded-2xl shadow-xs p-2 flex items-center gap-2 border border-brand-border mb-2.5">
-            <Search className="w-4 h-4 text-brand-light mr-1.5 shrink-0" />
+          <div className="bg-white rounded-2xl shadow-xs p-2 flex items-center gap-2 border border-[#e8e2d5] mb-2.5">
+            <Search className="w-4 h-4 text-[#4d7c60] mr-1.5 shrink-0" />
             <input
               type="text"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               placeholder="ابحث عن منتج..."
-              className="w-full bg-transparent focus:outline-none text-xs sm:text-sm font-semibold text-brand-dark"
+              className="w-full bg-transparent focus:outline-none text-xs sm:text-sm font-semibold text-[#1e382b]"
             />
             {search && (
               <button onClick={() => setSearch('')} className="p-1 text-slate-400 hover:text-slate-600">
@@ -248,23 +255,38 @@ export default function Home() {
             )}
           </div>
 
-          {/* Luxury Categories Grid */}
+          {/* Luxury Arabesque Categories Grid */}
           {!loading && !error && data.categories.length > 0 && (
-            <div className="grid grid-cols-3 sm:grid-cols-4 gap-1.5">
+            <div className="grid grid-cols-3 sm:grid-cols-4 gap-2">
               {data.categories.map(cat => {
                 const isSelected = selectedCategory === cat;
                 return (
                   <button
                     key={cat}
                     onClick={() => setSelectedCategory(cat)}
-                    className={`relative px-2 py-2 rounded-2xl text-[11px] font-black transition-all duration-200 text-center flex items-center justify-center min-h-[40px] leading-tight active:scale-95 ${
+                    style={
                       isSelected
-                        ? 'bg-gradient-to-b from-[#1b3627] to-[#12251a] text-[#fbf1d8] border-2 border-[#e0a948] shadow-md ring-2 ring-[#e0a948]/30 scale-[1.02]'
-                        : 'bg-white text-[#233d2e] border border-[#e4dcce] hover:border-[#c89d56]/60 hover:bg-[#faf7f0] shadow-2xs'
-                    }`}
+                        ? {
+                            background: 'linear-gradient(135deg, #1b3d2b 0%, #10261a 100%)',
+                            border: '2px solid #d4af37',
+                            color: '#fff8e7',
+                            boxShadow: '0 4px 12px rgba(212, 175, 55, 0.3), inset 0 1px 1px rgba(255,255,255,0.2)',
+                            transform: 'scale(1.02)'
+                          }
+                        : {
+                            background: 'linear-gradient(180deg, #ffffff 0%, #faf6ee 100%)',
+                            border: '1.5px solid #decfae',
+                            color: '#1b3828',
+                            boxShadow: '0 2px 4px rgba(0,0,0,0.03)'
+                          }
+                    }
+                    className="relative px-2 py-2.5 rounded-2xl text-[11px] font-black transition-all duration-200 text-center flex items-center justify-center min-h-[42px] leading-tight active:scale-95"
                   >
                     {isSelected && (
-                      <span className="absolute -top-1 -right-1 w-2.5 h-2.5 bg-[#e0a948] rounded-full ring-2 ring-white"></span>
+                      <span 
+                        style={{ background: '#d4af37', border: '2px solid #ffffff' }} 
+                        className="absolute -top-1 -right-1 w-3 h-3 rounded-full shadow-xs"
+                      ></span>
                     )}
                     <span className="truncate">{cat}</span>
                   </button>
@@ -276,8 +298,8 @@ export default function Home() {
 
         {/* Loading / Error States */}
         {loading && (
-          <div className="text-center py-16 text-brand-primary font-bold">
-            <RefreshCw className="w-7 h-7 animate-spin mx-auto mb-2 text-brand-accent" />
+          <div className="text-center py-16 text-[#2d533e] font-bold">
+            <RefreshCw className="w-7 h-7 animate-spin mx-auto mb-2 text-[#c89d56]" />
             جاري تحميل قائمة الأسعار...
           </div>
         )}
@@ -287,7 +309,7 @@ export default function Home() {
             <p className="text-xs font-bold mb-2.5">{error}</p>
             <button
               onClick={fetchData}
-              className="bg-brand-primary text-white text-xs px-3.5 py-1.5 rounded-lg font-bold inline-flex items-center gap-1 shadow"
+              className="bg-[#2d533e] text-white text-xs px-3.5 py-1.5 rounded-lg font-bold inline-flex items-center gap-1 shadow"
             >
               <RefreshCw className="w-3 h-3" /> إعادة المحاولة
             </button>
@@ -310,13 +332,13 @@ export default function Home() {
                   onClick={() => product.isAvailable && openProductModal(product)}
                   className={`bg-white rounded-2xl p-3 border shadow-2xs flex flex-col justify-between transition ${
                     product.isAvailable
-                      ? 'border-brand-border cursor-pointer hover:shadow-sm active:scale-[0.98]'
+                      ? 'border-[#e8e2d5] cursor-pointer hover:shadow-sm active:scale-[0.98]'
                       : 'border-slate-200 opacity-65 cursor-not-allowed bg-slate-50/70'
                   }`}
                 >
                   <div>
                     <div className="flex justify-between items-center mb-1">
-                      <span className="text-[10px] text-brand-accent font-bold bg-[#fbf9f4] px-1.5 py-0.5 rounded border border-brand-border inline-block">
+                      <span className="text-[10px] text-[#c89d56] font-bold bg-[#fbf9f4] px-1.5 py-0.5 rounded border border-[#e8e2d5] inline-block">
                         {product.category}
                       </span>
                       {!product.isAvailable && (
@@ -325,7 +347,7 @@ export default function Home() {
                         </span>
                       )}
                     </div>
-                    <h3 className="font-bold text-xs sm:text-sm text-brand-dark mb-2 line-clamp-2 leading-snug">
+                    <h3 className="font-bold text-xs sm:text-sm text-[#1e382b] mb-2 line-clamp-2 leading-snug">
                       {product.name}
                     </h3>
                   </div>
@@ -335,14 +357,14 @@ export default function Home() {
                       {product.variants.map((v, i) => (
                         <div key={i} className="flex justify-between items-center py-0.5 border-t border-slate-50">
                           <span className={!v.available ? 'line-through text-slate-400' : ''}>{v.weight}</span>
-                          <span className={`font-bold ${v.available ? 'text-brand-primary' : 'text-red-500 text-[10px]'}`}>
+                          <span className={`font-bold ${v.available ? 'text-[#2d533e]' : 'text-red-500 text-[10px]'}`}>
                             {v.available ? `${v.price} ج.م` : 'غير متوفر'}
                           </span>
                         </div>
                       ))}
                     </div>
                     {product.isAvailable ? (
-                      <button className="w-full bg-brand-primary text-white text-xs py-2 rounded-xl font-bold flex items-center justify-center gap-1 shadow-2xs hover:bg-brand-dark transition">
+                      <button className="w-full bg-[#2d533e] text-white text-xs py-2 rounded-xl font-bold flex items-center justify-center gap-1 shadow-2xs hover:bg-[#1e382b] transition">
                         <Plus className="w-3.5 h-3.5" /> اختيار
                       </button>
                     ) : (
@@ -365,27 +387,27 @@ export default function Home() {
       </main>
 
       {/* Floating Bottom Cart Bar */}
-      <div className="fixed bottom-0 left-0 right-0 p-3 bg-white/95 backdrop-blur-md border-t border-brand-border z-30 shadow-md">
+      <div className="fixed bottom-0 left-0 right-0 p-3 bg-white/95 backdrop-blur-md border-t border-[#e8e2d5] z-30 shadow-md">
         <div className="max-w-xl mx-auto flex items-center gap-2">
           <button
             onClick={() => {
               setCurrentStep('cart');
               setIsCartOpen(true);
             }}
-            className="w-full bg-brand-dark text-white p-3 rounded-2xl font-bold flex items-center justify-between shadow-md active:scale-[0.99] transition"
+            className="w-full bg-[#1e382b] text-white p-3 rounded-2xl font-bold flex items-center justify-between shadow-md active:scale-[0.99] transition"
           >
             <div className="flex items-center gap-2">
               <div className="relative">
-                <ShoppingBag className="w-5 h-5 text-brand-accent" />
+                <ShoppingBag className="w-5 h-5 text-[#c89d56]" />
                 {totalItemsCount > 0 && (
-                  <span className="absolute -top-2.5 -right-2.5 bg-brand-accent text-white text-[10px] w-4.5 h-4.5 rounded-full flex items-center justify-center font-black">
+                  <span className="absolute -top-2.5 -right-2.5 bg-[#c89d56] text-white text-[10px] w-4.5 h-4.5 rounded-full flex items-center justify-center font-black">
                     {totalItemsCount}
                   </span>
                 )}
               </div>
               <span className="text-xs font-bold">سلة الطلبات</span>
             </div>
-            <span className="text-xs text-brand-accent font-black">{totalAmount} جنيه</span>
+            <span className="text-xs text-[#c89d56] font-black">{totalAmount} جنيه</span>
           </button>
         </div>
       </div>
@@ -396,8 +418,8 @@ export default function Home() {
           <div className="bg-white w-full max-w-md rounded-t-[2rem] sm:rounded-2xl p-5 shadow-2xl animate-in slide-in-from-bottom duration-200">
             <div className="flex justify-between items-start mb-3">
               <div>
-                <span className="text-[10px] font-bold text-brand-accent">{activeModalProduct.category}</span>
-                <h2 className="text-base font-black text-brand-dark">{activeModalProduct.name}</h2>
+                <span className="text-[10px] font-bold text-[#c89d56]">{activeModalProduct.category}</span>
+                <h2 className="text-base font-black text-[#1e382b]">{activeModalProduct.name}</h2>
               </div>
               <button onClick={() => setActiveModalProduct(null)} className="p-1 text-slate-400 hover:text-slate-600">
                 <X className="w-5 h-5" />
@@ -416,7 +438,7 @@ export default function Home() {
                       !variant.available 
                         ? 'opacity-40 bg-slate-100 border-slate-200 cursor-not-allowed'
                         : selectedVariant?.weight === variant.weight
-                          ? 'border-brand-primary bg-brand-primary/5 text-brand-dark font-bold ring-2 ring-brand-primary/20'
+                          ? 'border-[#2d533e] bg-[#2d533e]/5 text-[#1e382b] font-bold ring-2 ring-[#2d533e]/20'
                           : 'border-slate-200 text-slate-700'
                     }`}
                   >
@@ -424,7 +446,7 @@ export default function Home() {
                       <span className="text-xs font-bold">{variant.weight}</span>
                       {!variant.available && <span className="text-[9px] text-red-500 font-bold">غير متوفر</span>}
                     </div>
-                    <div className="text-xs font-black text-brand-primary mt-0.5">
+                    <div className="text-xs font-black text-[#2d533e] mt-0.5">
                       {variant.available ? `${variant.price} ج.م` : 'غير متوفر'}
                     </div>
                   </button>
@@ -432,19 +454,19 @@ export default function Home() {
               </div>
             </div>
 
-            <div className="flex items-center justify-between mb-5 bg-brand-bg p-3 rounded-xl border border-brand-border">
+            <div className="flex items-center justify-between mb-5 bg-[#fbf9f4] p-3 rounded-xl border border-[#e8e2d5]">
               <span className="text-xs font-bold text-slate-700">الكمية المطلوبة:</span>
               <div className="flex items-center gap-2.5">
                 <button
                   onClick={() => setModalQty(Math.max(1, modalQty - 1))}
-                  className="w-7 h-7 rounded-lg bg-white border border-brand-border flex items-center justify-center font-bold text-brand-dark shadow-2xs"
+                  className="w-7 h-7 rounded-lg bg-white border border-[#e8e2d5] flex items-center justify-center font-bold text-[#1e382b] shadow-2xs"
                 >
                   <Minus className="w-3 h-3" />
                 </button>
-                <span className="font-bold text-sm text-brand-dark w-5 text-center">{modalQty}</span>
+                <span className="font-bold text-sm text-[#1e382b] w-5 text-center">{modalQty}</span>
                 <button
                   onClick={() => setModalQty(modalQty + 1)}
-                  className="w-7 h-7 rounded-lg bg-white border border-brand-border flex items-center justify-center font-bold text-brand-dark shadow-2xs"
+                  className="w-7 h-7 rounded-lg bg-white border border-[#e8e2d5] flex items-center justify-center font-bold text-[#1e382b] shadow-2xs"
                 >
                   <Plus className="w-3.5 h-3.5" />
                 </button>
@@ -454,7 +476,7 @@ export default function Home() {
             <button
               disabled={!selectedVariant || !selectedVariant.available}
               onClick={addToCart}
-              className="w-full bg-brand-primary disabled:opacity-50 disabled:cursor-not-allowed text-white py-3 rounded-xl font-bold text-xs shadow-md hover:bg-brand-dark transition"
+              className="w-full bg-[#2d533e] disabled:opacity-50 disabled:cursor-not-allowed text-white py-3 rounded-xl font-bold text-xs shadow-md hover:bg-[#1e382b] transition"
             >
               {selectedVariant?.available 
                 ? `إضافة للسلة — ${((selectedVariant?.price || 0) * modalQty).toFixed(2)} ج.م` 
@@ -476,12 +498,12 @@ export default function Home() {
                   {currentStep !== 'cart' && (
                     <button 
                       onClick={() => setCurrentStep(currentStep === 'review' ? 'checkout' : 'cart')} 
-                      className="p-1 text-slate-500 hover:text-brand-dark ml-1"
+                      className="p-1 text-slate-500 hover:text-[#1e382b] ml-1"
                     >
                       <ArrowRight className="w-4 h-4" />
                     </button>
                   )}
-                  <h2 className="text-sm font-black text-brand-dark">
+                  <h2 className="text-sm font-black text-[#1e382b]">
                     {currentStep === 'cart' && 'سلة المشتريات'}
                     {currentStep === 'checkout' && 'بيانات توصيل الطلب'}
                     {currentStep === 'review' && 'مراجعة الطلب قبل الإرسال'}
@@ -514,11 +536,11 @@ export default function Home() {
                     cart.map(item => (
                       <div key={item.key} className="py-2.5 flex justify-between items-center gap-2">
                         <div className="flex-1">
-                          <h4 className="font-bold text-xs text-brand-dark leading-snug">{item.name}</h4>
+                          <h4 className="font-bold text-xs text-[#1e382b] leading-snug">{item.name}</h4>
                           <div className="text-[10px] text-slate-500 font-semibold mt-0.5">
-                            {item.weight} — <span className="text-brand-primary font-bold">{item.price} ج.م</span>
+                            {item.weight} — <span className="text-[#2d533e] font-bold">{item.price} ج.م</span>
                           </div>
-                          <div className="text-[10px] text-brand-accent font-bold mt-0.5">
+                          <div className="text-[10px] text-[#c89d56] font-bold mt-0.5">
                             الإجمالي: {(item.price * item.qty).toFixed(2)} ج.م
                           </div>
                         </div>
@@ -530,7 +552,7 @@ export default function Home() {
                           >
                             <Minus className="w-3 h-3" />
                           </button>
-                          <span className="text-xs font-black w-4 text-center text-brand-dark">{item.qty}</span>
+                          <span className="text-xs font-black w-4 text-center text-[#1e382b]">{item.qty}</span>
                           <button
                             onClick={() => updateCartQty(item.key, 1)}
                             className="w-6.5 h-6.5 bg-slate-100 hover:bg-slate-200 rounded-lg flex items-center justify-center text-slate-700 font-bold"
@@ -556,7 +578,7 @@ export default function Home() {
                 <form id="checkout-form" onSubmit={handleProceedToReview} className="overflow-y-auto max-h-[58vh] py-2.5 space-y-3">
                   <div>
                     <label className="text-[11px] font-bold text-slate-700 block mb-1 flex items-center gap-1">
-                      <User className="w-3 h-3 text-brand-primary" />
+                      <User className="w-3 h-3 text-[#2d533e]" />
                       الاسم الكامل <span className="text-red-500">*</span>
                     </label>
                     <input
@@ -565,7 +587,7 @@ export default function Home() {
                       onChange={(e) => setCustomer({ ...customer, name: e.target.value })}
                       placeholder="أدخل اسمك بالكامل"
                       className={`w-full p-2 text-xs font-semibold rounded-xl border ${
-                        formErrors.name ? 'border-red-500 bg-red-50/50' : 'border-slate-200 focus:border-brand-primary'
+                        formErrors.name ? 'border-red-500 bg-red-50/50' : 'border-slate-200 focus:border-[#2d533e]'
                       } outline-none`}
                     />
                     {formErrors.name && <span className="text-[10px] text-red-500 font-bold mt-0.5 block">{formErrors.name}</span>}
@@ -573,7 +595,7 @@ export default function Home() {
 
                   <div>
                     <label className="text-[11px] font-bold text-slate-700 block mb-1 flex items-center gap-1">
-                      <Phone className="w-3 h-3 text-brand-primary" />
+                      <Phone className="w-3 h-3 text-[#2d533e]" />
                       رقم الهاتف <span className="text-red-500">*</span>
                     </label>
                     <input
@@ -583,7 +605,7 @@ export default function Home() {
                       onChange={(e) => setCustomer({ ...customer, phone: e.target.value })}
                       placeholder="01012345678"
                       className={`w-full p-2 text-xs font-semibold rounded-xl border text-right ${
-                        formErrors.phone ? 'border-red-500 bg-red-50/50' : 'border-slate-200 focus:border-brand-primary'
+                        formErrors.phone ? 'border-red-500 bg-red-50/50' : 'border-slate-200 focus:border-[#2d533e]'
                       } outline-none`}
                     />
                     {formErrors.phone && <span className="text-[10px] text-red-500 font-bold mt-0.5 block">{formErrors.phone}</span>}
@@ -591,7 +613,7 @@ export default function Home() {
 
                   <div>
                     <label className="text-[11px] font-bold text-slate-700 block mb-1 flex items-center gap-1">
-                      <MapPin className="w-3 h-3 text-brand-primary" />
+                      <MapPin className="w-3 h-3 text-[#2d533e]" />
                       العنوان بالتفصيل <span className="text-red-500">*</span>
                     </label>
                     <textarea
@@ -600,7 +622,7 @@ export default function Home() {
                       onChange={(e) => setCustomer({ ...customer, address: e.target.value })}
                       placeholder="المحافظة - المدينة - المنطقة - الشارع - رقم المنزل"
                       className={`w-full p-2 text-xs font-semibold rounded-xl border ${
-                        formErrors.address ? 'border-red-500 bg-red-50/50' : 'border-slate-200 focus:border-brand-primary'
+                        formErrors.address ? 'border-red-500 bg-red-50/50' : 'border-slate-200 focus:border-[#2d533e]'
                       } outline-none resize-none`}
                     />
                     {formErrors.address && <span className="text-[10px] text-red-500 font-bold mt-0.5 block">{formErrors.address}</span>}
@@ -608,7 +630,7 @@ export default function Home() {
 
                   <div>
                     <label className="text-[11px] font-bold text-slate-700 block mb-1 flex items-center gap-1">
-                      <FileText className="w-3 h-3 text-brand-primary" />
+                      <FileText className="w-3 h-3 text-[#2d533e]" />
                       ملاحظات على الطلب (اختياري)
                     </label>
                     <textarea
@@ -616,7 +638,7 @@ export default function Home() {
                       value={customer.notes}
                       onChange={(e) => setCustomer({ ...customer, notes: e.target.value })}
                       placeholder="مثال: اتصل بي قبل التوصيل، بدون طحن، طحن ناعم..."
-                      className="w-full p-2 text-xs font-semibold rounded-xl border border-slate-200 focus:border-brand-primary outline-none resize-none"
+                      className="w-full p-2 text-xs font-semibold rounded-xl border border-slate-200 focus:border-[#2d533e] outline-none resize-none"
                     />
                   </div>
                 </form>
@@ -625,34 +647,34 @@ export default function Home() {
               {/* Step 3: Order Review */}
               {currentStep === 'review' && (
                 <div className="overflow-y-auto max-h-[58vh] py-2.5 space-y-3">
-                  <div className="bg-brand-bg p-3 rounded-xl border border-brand-border">
-                    <h4 className="text-xs font-black text-brand-dark mb-1.5 pb-1 border-b border-brand-border">
+                  <div className="bg-[#fbf9f4] p-3 rounded-xl border border-[#e8e2d5]">
+                    <h4 className="text-xs font-black text-[#1e382b] mb-1.5 pb-1 border-b border-[#e8e2d5]">
                       بيانات العميل والتوصيل:
                     </h4>
                     <div className="text-[11px] space-y-1 text-slate-700">
-                      <div><strong className="text-brand-dark">الاسم:</strong> {customer.name}</div>
-                      <div><strong className="text-brand-dark">الهاتف:</strong> {customer.phone}</div>
-                      <div><strong className="text-brand-dark">العنوان:</strong> {customer.address}</div>
+                      <div><strong className="text-[#1e382b]">الاسم:</strong> {customer.name}</div>
+                      <div><strong className="text-[#1e382b]">الهاتف:</strong> {customer.phone}</div>
+                      <div><strong className="text-[#1e382b]">العنوان:</strong> {customer.address}</div>
                       {customer.notes && (
-                        <div><strong className="text-brand-dark">الملاحظات:</strong> {customer.notes}</div>
+                        <div><strong className="text-[#1e382b]">الملاحظات:</strong> {customer.notes}</div>
                       )}
                     </div>
                   </div>
 
                   <div className="bg-white p-3 rounded-xl border border-slate-200">
-                    <h4 className="text-xs font-black text-brand-dark mb-1.5 pb-1 border-b border-slate-100">
+                    <h4 className="text-xs font-black text-[#1e382b] mb-1.5 pb-1 border-b border-slate-100">
                       المنتجات المطلوبة:
                     </h4>
                     <div className="space-y-1.5 divide-y divide-slate-50">
                       {cart.map((item, idx) => (
                         <div key={idx} className="pt-1.5 first:pt-0 flex justify-between items-center text-xs">
                           <div>
-                            <span className="font-bold text-brand-dark">{item.name}</span>
+                            <span className="font-bold text-[#1e382b]">{item.name}</span>
                             <span className="text-[10px] text-slate-500 block">
                               {item.weight} × {item.qty} ({item.price} ج.م)
                             </span>
                           </div>
-                          <span className="font-black text-brand-primary">
+                          <span className="font-black text-[#2d533e]">
                             {(item.price * item.qty).toFixed(2)} ج.م
                           </span>
                         </div>
@@ -667,14 +689,14 @@ export default function Home() {
             <div className="pt-2.5 border-t border-slate-100 space-y-2">
               <div className="flex justify-between items-center font-bold text-xs pb-0.5">
                 <span className="text-slate-600">الإجمالي النهائي:</span>
-                <span className="text-brand-primary text-base font-black">{totalAmount} جنيه</span>
+                <span className="text-[#2d533e] text-base font-black">{totalAmount} جنيه</span>
               </div>
 
               {currentStep === 'cart' && (
                 <button
                   disabled={cart.length === 0}
                   onClick={() => setCurrentStep('checkout')}
-                  className="w-full bg-brand-primary disabled:opacity-50 text-white py-3 rounded-xl font-bold text-xs flex items-center justify-center gap-1.5 shadow-md hover:bg-brand-dark transition"
+                  className="w-full bg-[#2d533e] disabled:opacity-50 text-white py-3 rounded-xl font-bold text-xs flex items-center justify-center gap-1.5 shadow-md hover:bg-[#1e382b] transition"
                 >
                   <span>متابعة إتمام الطلب</span>
                   <ChevronRight className="w-3.5 h-3.5 rotate-180" />
@@ -685,7 +707,7 @@ export default function Home() {
                 <button
                   form="checkout-form"
                   type="submit"
-                  className="w-full bg-brand-primary text-white py-3 rounded-xl font-bold text-xs flex items-center justify-center gap-1.5 shadow-md hover:bg-brand-dark transition"
+                  className="w-full bg-[#2d533e] text-white py-3 rounded-xl font-bold text-xs flex items-center justify-center gap-1.5 shadow-md hover:bg-[#1e382b] transition"
                 >
                   <span>مراجعة الطلب قبل الإرسال</span>
                   <ChevronRight className="w-3.5 h-3.5 rotate-180" />
@@ -720,7 +742,7 @@ export default function Home() {
         <div className="fixed inset-0 bg-black/70 z-60 flex items-center justify-center p-4">
           <div className="bg-white rounded-2xl p-4 max-w-xs w-full text-center shadow-2xl animate-in zoom-in-95">
             <AlertCircle className="w-8 h-8 text-red-500 mx-auto mb-1.5" />
-            <h3 className="font-black text-xs text-brand-dark mb-1">تأكيد مسح السلة</h3>
+            <h3 className="font-black text-xs text-[#1e382b] mb-1">تأكيد مسح السلة</h3>
             <p className="text-[11px] text-slate-500 mb-3">هل أنت متأكد من رغبتك في حذف جميع المنتجات من السلة؟</p>
             <div className="flex gap-2">
               <button
