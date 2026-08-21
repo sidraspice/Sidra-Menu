@@ -3,13 +3,11 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { 
   Search, ShoppingBag, Plus, Minus, Trash2, RefreshCw, X, Check, Phone, 
-  ArrowRight, User, MapPin, FileText, AlertCircle, ChevronRight, Sparkles, ShieldCheck, Ban,
-  Flame, Leaf, Coffee, Cake, HeartPulse, Wheat, Grid, Sparkle
+  ArrowRight, User, MapPin, FileText, AlertCircle, ChevronRight, Sparkles, ShieldCheck, Ban
 } from 'lucide-react';
 
 const WHATSAPP_NUMBER = "201044760160";
 
-// خريطة أيقونات ذكية وواضحة ومعروفة لكل قسم
 const getCategoryVisual = (catName) => {
   const name = catName.trim().toLowerCase();
   if (name.includes('كل')) return { icon: '✨', label: 'الكل' };
@@ -186,15 +184,17 @@ export default function Home() {
   };
 
   const handleSendWhatsAppOrder = () => {
-    let message = `*طلب جديد - عطارة سدرة بدمنهور*\n\n`;
-    message += `*بيانات العميل:*\n`;
-    message += `الاسم: ${customer.name.trim()}\n`;
-    message += `الهاتف: ${customer.phone.trim()}\n`;
-    message += `العنوان: ${customer.address.trim()}\n`;
+    let message = `🌿 *طلب جديد - عطارة سدرة بدمنهور*\n`;
+    message += `═══════════════════\n\n`;
+    message += `📋 *بيانات التوصيل:*\n`;
+    message += `👤 *الاسم:* ${customer.name.trim()}\n`;
+    message += `📱 *الهاتف:* ${customer.phone.trim()}\n`;
+    message += `📍 *العنوان:* ${customer.address.trim()}\n`;
     if (customer.notes.trim()) {
-      message += `ملاحظات: ${customer.notes.trim()}\n`;
+      message += `📝 *ملاحظات:* ${customer.notes.trim()}\n`;
     }
-    message += `\n*تفاصيل الطلب:*\n`;
+    message += `\n📦 *تفاصيل المنتجات:*\n`;
+    message += `───────────────────\n`;
     
     cart.forEach((item, index) => {
       const itemTotal = (item.price * item.qty).toFixed(2);
@@ -210,12 +210,14 @@ export default function Home() {
         totalWeightStr = `${item.weight} (عدد ${item.qty})`;
       }
 
-      message += `\n${index + 1}- ${item.name}\n`;
-      message += `الوزن: ${totalWeightStr}\n`;
-      message += `السعر الإجمالي: ${itemTotal} جنيه\n`;
+      message += `\n*${index + 1} ◂ ${item.name}*\n`;
+      message += `   ⚖️ *الوزن:* ${totalWeightStr}\n`;
+      message += `   💵 *السعر:* ${itemTotal} جنيه\n`;
     });
 
-    message += `\n*إجمالي الطلب:* ${totalAmount} جنيه`;
+    message += `\n═══════════════════\n`;
+    message += `💰 *إجمالي الطلب:* *${totalAmount} جنيه*\n`;
+    message += `✨ *الدفع عند الاستلام بعد المعاينة*`;
 
     const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
     window.open(url, '_blank');
@@ -303,7 +305,6 @@ export default function Home() {
                     }
                     className="relative px-2 py-1.5 rounded-2xl transition-all duration-200 flex flex-col items-center justify-center min-h-[46px] active:scale-95 text-center group"
                   >
-                    {/* Glowing Accent Dot for Selected Category */}
                     {isSelected && (
                       <span 
                         style={{ background: '#d4af37' }} 
@@ -311,12 +312,10 @@ export default function Home() {
                       ></span>
                     )}
                     
-                    {/* Visual Icon */}
                     <span className="text-base sm:text-lg mb-0.5 leading-none select-none">
                       {visual.icon}
                     </span>
                     
-                    {/* Category Label */}
                     <span className={`text-[10px] sm:text-[11px] font-black leading-tight truncate max-w-[95%] ${isSelected ? 'text-[#fff4d6]' : 'text-[#1e382b]'}`}>
                       {cat}
                     </span>
