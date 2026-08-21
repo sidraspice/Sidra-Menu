@@ -3,7 +3,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { 
   Search, ShoppingBag, Plus, Minus, Trash2, RefreshCw, X, Check, Phone, 
-  ArrowRight, User, MapPin, FileText, AlertCircle, ChevronRight, Sparkles, ShieldCheck, Ban 
+  ArrowRight, User, MapPin, FileText, AlertCircle, ChevronRight, Sparkles, ShieldCheck, Ban, Layers 
 } from 'lucide-react';
 
 const WHATSAPP_NUMBER = "201044760160";
@@ -203,11 +203,10 @@ export default function Home() {
 
   return (
     <div className="min-h-screen pb-32 text-slate-800 selection:bg-brand-accent selection:text-white bg-[#fbf9f4]">
-      {/* Top Logo Banner: Full Cover to Edges + Big Catchy Guarantee Badge */}
+      {/* Top Logo Banner */}
       <header className="pt-2 pb-0 px-4 max-w-xl mx-auto flex flex-col items-center justify-center">
         <div className="w-full max-w-[340px] sm:max-w-[380px] bg-white rounded-3xl p-1.5 sm:p-2 shadow-xs border border-brand-border/70 flex flex-col items-center">
           
-          {/* Logo fills the entire container seamlessly */}
           <div className="w-full aspect-[16/10] rounded-2xl overflow-hidden flex items-center justify-center bg-white">
             <img 
               src="/logo.png" 
@@ -216,7 +215,6 @@ export default function Home() {
             />
           </div>
           
-          {/* Bigger, High-Contrast & Beautiful Guarantee Badge */}
           <div className="w-full mt-2 mb-0.5 py-2 px-3 rounded-2xl bg-gradient-to-r from-[#173023] via-[#224432] to-[#173023] border-2 border-[#e0a948] shadow-md flex items-center justify-center gap-2">
             <Sparkles className="w-5 h-5 text-[#e0a948] shrink-0 animate-pulse" />
             <span className="text-[15px] sm:text-base font-black text-amber-100 tracking-wide drop-shadow-sm text-center leading-tight">
@@ -228,13 +226,13 @@ export default function Home() {
         </div>
       </header>
 
-      {/* Main Container with Sticky Search & Categories Navigation */}
+      {/* Main Container with Sticky Search & Luxury Categories Grid */}
       <main className="max-w-xl mx-auto px-4 mt-2">
         
-        {/* Sticky Search & Categories Grid */}
-        <div className="sticky top-0 z-30 bg-[#fbf9f4]/98 backdrop-blur-md pt-2 pb-2.5 -mx-4 px-4 border-b border-brand-border/50 shadow-xs mb-3">
+        {/* Sticky Search & Luxury Categories */}
+        <div className="sticky top-0 z-30 bg-[#fbf9f4]/98 backdrop-blur-md pt-2 pb-2.5 -mx-4 px-4 border-b border-brand-border/60 shadow-xs mb-3">
           {/* Search Bar */}
-          <div className="bg-white rounded-2xl shadow-xs p-2 flex items-center gap-2 border border-brand-border mb-2">
+          <div className="bg-white rounded-2xl shadow-xs p-2 flex items-center gap-2 border border-brand-border mb-2.5">
             <Search className="w-4 h-4 text-brand-light mr-1.5 shrink-0" />
             <input
               type="text"
@@ -250,22 +248,28 @@ export default function Home() {
             )}
           </div>
 
-          {/* All Categories Fixed & Fully Visible in Grid */}
+          {/* Luxury Categories Grid */}
           {!loading && !error && data.categories.length > 0 && (
             <div className="grid grid-cols-3 sm:grid-cols-4 gap-1.5">
-              {data.categories.map(cat => (
-                <button
-                  key={cat}
-                  onClick={() => setSelectedCategory(cat)}
-                  className={`p-1.5 sm:p-2 rounded-xl text-[11px] font-bold transition-all text-center flex items-center justify-center min-h-[36px] leading-tight active:scale-95 ${
-                    selectedCategory === cat
-                      ? 'bg-brand-primary text-white shadow-sm ring-2 ring-brand-primary/20 font-black'
-                      : 'bg-white text-brand-dark border border-brand-border hover:bg-slate-50'
-                  }`}
-                >
-                  {cat}
-                </button>
-              ))}
+              {data.categories.map(cat => {
+                const isSelected = selectedCategory === cat;
+                return (
+                  <button
+                    key={cat}
+                    onClick={() => setSelectedCategory(cat)}
+                    className={`relative px-2 py-2 rounded-2xl text-[11px] font-black transition-all duration-200 text-center flex items-center justify-center min-h-[40px] leading-tight active:scale-95 ${
+                      isSelected
+                        ? 'bg-gradient-to-b from-[#1b3627] to-[#12251a] text-[#fbf1d8] border-2 border-[#e0a948] shadow-md ring-2 ring-[#e0a948]/30 scale-[1.02]'
+                        : 'bg-white text-[#233d2e] border border-[#e4dcce] hover:border-[#c89d56]/60 hover:bg-[#faf7f0] shadow-2xs'
+                    }`}
+                  >
+                    {isSelected && (
+                      <span className="absolute -top-1 -right-1 w-2.5 h-2.5 bg-[#e0a948] rounded-full ring-2 ring-white"></span>
+                    )}
+                    <span className="truncate">{cat}</span>
+                  </button>
+                );
+              })}
             </div>
           )}
         </div>
