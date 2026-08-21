@@ -192,10 +192,9 @@ export default function Home() {
 
   return (
     <div className="min-h-screen pb-32 text-slate-800 selection:bg-brand-accent selection:text-white bg-[#fbf9f4]">
-      {/* Logo Container with Vibrant Bottom Badge */}
-      <header className="pt-3 pb-2 px-4 max-w-xl mx-auto flex flex-col items-center justify-center">
+      {/* Top Logo Banner */}
+      <header className="pt-3 pb-1 px-4 max-w-xl mx-auto flex flex-col items-center justify-center">
         <div className="relative w-full max-w-[320px] sm:max-w-[380px] bg-white rounded-3xl p-3 shadow-xs border border-brand-border/60 flex flex-col items-center">
-          {/* Main Logo Image */}
           <div className="w-full aspect-[4/3] flex items-center justify-center">
             <img 
               src="/logo.png" 
@@ -204,10 +203,9 @@ export default function Home() {
             />
           </div>
           
-          {/* Prominent Colorful Arabic Guarantee Banner at the Bottom of Logo */}
           <div className="w-[96%] -mt-3 mb-1 py-2 px-3 rounded-2xl bg-gradient-to-r from-[#1e382b] via-[#2d533e] to-[#1e382b] border-2 border-[#e0a948] shadow-md flex items-center justify-center gap-2">
             <Sparkles className="w-4 h-4 text-[#e0a948] shrink-0 animate-pulse" />
-            <span className="text-sm sm:text-base font-black text-amber-100 tracking-wide drop-shadow-xs text-center">
+            <span className="text-xs sm:text-sm font-black text-amber-100 tracking-wide drop-shadow-xs text-center">
               ما تدفعش ولا جنيه غير بعد المعاينة
             </span>
             <ShieldCheck className="w-4 h-4 text-[#e0a948] shrink-0" />
@@ -215,37 +213,35 @@ export default function Home() {
         </div>
       </header>
 
-      {/* Main Container */}
+      {/* Main Container with Sticky Search & Categories Navigation */}
       <main className="max-w-xl mx-auto px-4 mt-2">
-        {/* Search Bar */}
-        <div className="bg-white rounded-2xl shadow-xs p-2.5 flex items-center gap-2 border border-brand-border mb-4">
-          <Search className="w-5 h-5 text-brand-light mr-2 shrink-0" />
-          <input
-            type="text"
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            placeholder="ابحث عن منتج..."
-            className="w-full bg-transparent focus:outline-none text-sm font-semibold text-brand-dark"
-          />
-          {search && (
-            <button onClick={() => setSearch('')} className="p-1 text-slate-400 hover:text-slate-600">
-              <X className="w-4 h-4" />
-            </button>
-          )}
-        </div>
+        {/* STICKY BAR: Search + Categories stay fixed at the top during scroll */}
+        <div className="sticky top-0 z-30 bg-[#fbf9f4]/95 backdrop-blur-md pt-2 pb-2.5 -mx-4 px-4 border-b border-brand-border/40 shadow-xs mb-3">
+          {/* Search Bar */}
+          <div className="bg-white rounded-2xl shadow-xs p-2 flex items-center gap-2 border border-brand-border mb-2">
+            <Search className="w-4 h-4 text-brand-light mr-1.5 shrink-0" />
+            <input
+              type="text"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              placeholder="ابحث عن منتج..."
+              className="w-full bg-transparent focus:outline-none text-xs sm:text-sm font-semibold text-brand-dark"
+            />
+            {search && (
+              <button onClick={() => setSearch('')} className="p-1 text-slate-400 hover:text-slate-600">
+                <X className="w-3.5 h-3.5" />
+              </button>
+            )}
+          </div>
 
-        {/* Categories Grid (NO Horizontal Scroll) */}
-        {!loading && !error && data.categories.length > 0 && (
-          <div className="mb-5">
-            <div className="text-xs font-black text-brand-dark mb-2 flex items-center gap-1.5">
-              <span>الأقسام والتصنيفات</span>
-            </div>
-            <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+          {/* Categories Grid (Sticky with clean compact grid) */}
+          {!loading && !error && data.categories.length > 0 && (
+            <div className="grid grid-cols-3 sm:grid-cols-4 gap-1.5 max-h-[140px] overflow-y-auto pr-0.5 scrollbar-thin">
               {data.categories.map(cat => (
                 <button
                   key={cat}
                   onClick={() => setSelectedCategory(cat)}
-                  className={`p-2.5 rounded-xl text-xs font-bold transition-all text-center flex items-center justify-center min-h-[44px] shadow-2xs active:scale-95 ${
+                  className={`p-2 rounded-xl text-[11px] font-bold transition-all text-center flex items-center justify-center min-h-[38px] leading-tight active:scale-95 ${
                     selectedCategory === cat
                       ? 'bg-brand-primary text-white shadow-sm ring-2 ring-brand-primary/20'
                       : 'bg-white text-brand-dark border border-brand-border hover:bg-slate-50'
@@ -255,8 +251,8 @@ export default function Home() {
                 </button>
               ))}
             </div>
-          </div>
-        )}
+          )}
+        </div>
 
         {/* Loading / Error States */}
         {loading && (
