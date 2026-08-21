@@ -192,16 +192,16 @@ export default function Home() {
 
   return (
     <div className="min-h-screen pb-32 text-slate-800 selection:bg-brand-accent selection:text-white bg-[#fbf9f4]">
-      {/* Compact Clean Header (No Big Green Background) */}
-      <header className="pt-4 pb-2 px-4 text-center max-w-xl mx-auto flex flex-col items-center">
-        <div className="w-24 h-24 sm:w-28 sm:h-28 flex items-center justify-center mb-1">
+      {/* Big Full-Width Logo Header */}
+      <header className="pt-6 pb-2 px-4 text-center max-w-xl mx-auto flex flex-col items-center">
+        <div className="w-48 h-48 sm:w-60 sm:h-60 flex items-center justify-center mb-2">
           <img 
             src="/logo.png" 
             alt="عطارة سدرة بدمنهور" 
             className="w-full h-full object-contain"
           />
         </div>
-        <h1 className="text-xl sm:text-2xl font-black text-brand-dark tracking-wide">
+        <h1 className="text-2xl sm:text-3xl font-black text-brand-dark tracking-wide">
           عطارة سدرة بدمنهور
         </h1>
       </header>
