@@ -224,36 +224,39 @@ export default function Home() {
         </div>
       </header>
 
-      {/* Main Container with Sticky Search & Categories Navigation */}
+      {/* Main Container */}
       <main className="max-w-xl mx-auto px-4 mt-2">
-        <div className="sticky top-0 z-30 bg-[#fbf9f4]/95 backdrop-blur-md pt-2 pb-2.5 -mx-4 px-4 border-b border-brand-border/40 shadow-xs mb-3">
-          {/* Search Bar */}
-          <div className="bg-white rounded-2xl shadow-xs p-2 flex items-center gap-2 border border-brand-border mb-2">
-            <Search className="w-4 h-4 text-brand-light mr-1.5 shrink-0" />
-            <input
-              type="text"
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              placeholder="ابحث عن منتج..."
-              className="w-full bg-transparent focus:outline-none text-xs sm:text-sm font-semibold text-brand-dark"
-            />
-            {search && (
-              <button onClick={() => setSearch('')} className="p-1 text-slate-400 hover:text-slate-600">
-                <X className="w-3.5 h-3.5" />
-              </button>
-            )}
-          </div>
+        {/* Search Bar */}
+        <div className="bg-white rounded-2xl shadow-xs p-2 flex items-center gap-2 border border-brand-border mb-3">
+          <Search className="w-4 h-4 text-brand-light mr-1.5 shrink-0" />
+          <input
+            type="text"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            placeholder="ابحث عن منتج..."
+            className="w-full bg-transparent focus:outline-none text-xs sm:text-sm font-semibold text-brand-dark"
+          />
+          {search && (
+            <button onClick={() => setSearch('')} className="p-1 text-slate-400 hover:text-slate-600">
+              <X className="w-3.5 h-3.5" />
+            </button>
+          )}
+        </div>
 
-          {/* Categories Grid */}
-          {!loading && !error && data.categories.length > 0 && (
-            <div className="grid grid-cols-3 sm:grid-cols-4 gap-1.5 max-h-[140px] overflow-y-auto pr-0.5 scrollbar-thin">
+        {/* All Categories Fully Visible Grid (Clean & Fits Perfectly) */}
+        {!loading && !error && data.categories.length > 0 && (
+          <div className="mb-4">
+            <div className="text-xs font-black text-brand-dark mb-2 flex items-center gap-1.5">
+              <span>الأقسام والتصنيفات</span>
+            </div>
+            <div className="grid grid-cols-3 sm:grid-cols-4 gap-1.5">
               {data.categories.map(cat => (
                 <button
                   key={cat}
                   onClick={() => setSelectedCategory(cat)}
                   className={`p-2 rounded-xl text-[11px] font-bold transition-all text-center flex items-center justify-center min-h-[38px] leading-tight active:scale-95 ${
                     selectedCategory === cat
-                      ? 'bg-brand-primary text-white shadow-sm ring-2 ring-brand-primary/20'
+                      ? 'bg-brand-primary text-white shadow-sm ring-2 ring-brand-primary/20 font-black'
                       : 'bg-white text-brand-dark border border-brand-border hover:bg-slate-50'
                   }`}
                 >
@@ -261,8 +264,8 @@ export default function Home() {
                 </button>
               ))}
             </div>
-          )}
-        </div>
+          </div>
+        )}
 
         {/* Loading / Error States */}
         {loading && (
@@ -284,7 +287,7 @@ export default function Home() {
           </div>
         )}
 
-        {/* Products Grid with Availability Tags */}
+        {/* Products Grid */}
         {!loading && !error && (
           <div>
             <div className="flex justify-between items-center mb-2.5">
