@@ -192,22 +192,19 @@ export default function Home() {
 
   return (
     <div className="min-h-screen pb-32 text-slate-800 selection:bg-brand-accent selection:text-white bg-[#fbf9f4]">
-      {/* Big Full-Width Logo Header */}
-      <header className="pt-6 pb-2 px-4 text-center max-w-xl mx-auto flex flex-col items-center">
-        <div className="w-48 h-48 sm:w-60 sm:h-60 flex items-center justify-center mb-2">
+      {/* Full-width Logo Only Header (No Extra Text) */}
+      <header className="pt-4 pb-1 px-4 text-center max-w-xl mx-auto flex flex-col items-center justify-center">
+        <div className="w-full max-w-[280px] sm:max-w-[340px] aspect-[4/3] flex items-center justify-center">
           <img 
             src="/logo.png" 
             alt="عطارة سدرة بدمنهور" 
             className="w-full h-full object-contain"
           />
         </div>
-        <h1 className="text-2xl sm:text-3xl font-black text-brand-dark tracking-wide">
-          عطارة سدرة بدمنهور
-        </h1>
       </header>
 
       {/* Main Container */}
-      <main className="max-w-xl mx-auto px-4 mt-2">
+      <main className="max-w-xl mx-auto px-4 mt-1">
         {/* Search Bar */}
         <div className="bg-white rounded-2xl shadow-xs p-2.5 flex items-center gap-2 border border-brand-border mb-4">
           <Search className="w-5 h-5 text-brand-light mr-2 shrink-0" />
@@ -480,7 +477,7 @@ export default function Home() {
                             onClick={() => updateCartQty(item.key, 1)}
                             className="w-6.5 h-6.5 bg-slate-100 hover:bg-slate-200 rounded-lg flex items-center justify-center text-slate-700 font-bold"
                           >
-                            <Plus className="w-3 h-3" />
+                            <Plus className="w-3.5 h-3.5" />
                           </button>
                           <button
                             onClick={() => removeCartItem(item.key)}
