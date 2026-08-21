@@ -2,18 +2,36 @@ import { NextResponse } from 'next/server';
 
 export const dynamic = 'force-dynamic';
 
+function parseCSVLine(text) {
+  const result = [];
+  let cur = '';
+  let inQuotes = false;
+  for (let i = 0; i < text.length; i++) {
+    const c = text[i];
+    if (c === '"') {
+      inQuotes = !inQuotes;
+    } else if (c === ',' && !inQuotes) {
+      result.push(cur.trim().replace(/^["']|["']$/g, ''));
+      cur = '';
+    } else {
+      cur += c;
+    }
+  }
+  result.push(cur.trim().replace(/^["']|["']$/g, ''));
+  return result;
+}
+
 function parseCSV(text) {
   const lines = text.split(/\r?\n/).filter(line => line.trim() !== '');
   if (lines.length < 2) return [];
 
-  const headers = lines[0].split(',').map(h => h.trim().replace(/^["']|["']$/g, ''));
+  const headers = parseCSVLine(lines[0]);
   
   const categoryIdx = headers.findIndex(h => h.includes('قسم') || h.includes('تصنيف'));
   const nameIdx = headers.findIndex(h => h.includes('منتج') || h.includes('اسم') || h.includes('صنف'));
   const weightIdx = headers.findIndex(h => h.includes('وزن') || h.includes('حجم'));
   const priceIdx = headers.findIndex(h => h.includes('سعر') || h.includes('ثمن'));
   
-  // البحث عن عمود التوفر أو الحالة بأي مسمى
   let statusIdx = headers.findIndex(h => 
     h.includes('حالة') || 
     h.includes('توفر') || 
@@ -24,10 +42,20 @@ function parseCSV(text) {
     h.includes('التوفر')
   );
 
+  if (statusIdx === -1) {
+    for (let r = 1; r < Math.min(lines.length, 10); r++) {
+      const vals = parseCSVLine(lines[r]);
+      const col = vals.findIndex(v => v.includes('متوفر') || v.includes('متاح') || v.includes('غير'));
+      if (col !== -1) {
+        statusIdx = col;
+        break;
+      }
+    }
+  }
+
   const rows = [];
   for (let i = 1; i < lines.length; i++) {
-    // التعامل مع الفواصل داخل النصوص
-    const values = lines[i].split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/).map(v => v.trim().replace(/^["']|["']$/g, ''));
+    const values = parseCSVLine(lines[i]);
     if (!values[nameIdx] || !values[priceIdx]) continue;
 
     const rawWeight = values[weightIdx] ? values[weightIdx].trim() : '';
@@ -35,10 +63,7 @@ function parseCSV(text) {
       continue;
     }
 
-    // التحقق من حالة التوفر
     let isAvailable = true;
-    
-    // فحص العمود المكتشف أو فحص كل الحقول للسطر
     if (statusIdx !== -1 && values[statusIdx] !== undefined) {
       const statusVal = values[statusIdx].trim();
       if (
@@ -50,12 +75,6 @@ function parseCSV(text) {
         statusVal.toLowerCase() === 'false' || 
         statusVal === '0'
       ) {
-        isAvailable = false;
-      }
-    } else {
-      // بحث شامل في كل قيم الصف عن كلمة "غير متوفر"
-      const rowText = lines[i];
-      if (rowText.includes('غير متوفر') || rowText.includes('غير متاح') || rowText.includes('نفذ')) {
         isAvailable = false;
       }
     }
@@ -96,9 +115,7 @@ function parseCSV(text) {
 export async function GET() {
   try {
     const sheetUrl = process.env.GOOGLE_SHEET_CSV_URL || "https://docs.google.com/spreadsheets/d/e/2PACX-1vS0KMamBEhCgLLWA4TEsYLz9uvxBE-EShQ0kBON0tYut-dZrBm4BDfuDgf23rD4KlWTt_PgCf--4vQz/pub?output=csv";
-    
-    // منع التخزين المؤقت لجلب التعديلات فوراً
-    const urlWithCacheBust = sheetUrl + (sheetUrl.includes('?') ? '&' : '?') + 'timestamp=' + Date.now();
+    const urlWithCacheBust = sheetUrl + (sheetUrl.includes('?') ? '&' : '?') + 'nocache=' + Date.now();
     
     const res = await fetch(urlWithCacheBust, {
       cache: 'no-store',
