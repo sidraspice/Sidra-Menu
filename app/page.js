@@ -178,11 +178,22 @@ export default function Home() {
     
     cart.forEach((item, index) => {
       const itemTotal = (item.price * item.qty).toFixed(2);
+      
+      // استخراج الرقم من نص الوزن (مثل: "1 جرام" أو "50 جرام") وحساب الإجمالي
+      const numMatch = item.weight.match(/\d+(\.\d+)?/);
+      let totalWeightStr = item.weight;
+
+      if (numMatch) {
+        const unitWeight = parseFloat(numMatch[0]);
+        const calculatedTotalWeight = unitWeight * item.qty;
+        totalWeightStr = item.weight.replace(numMatch[0], calculatedTotalWeight.toString());
+      } else if (item.qty > 1) {
+        totalWeightStr = `${item.weight} (عدد ${item.qty})`;
+      }
+
       message += `\n${index + 1}- ${item.name}\n`;
-      message += `الوزن: ${item.weight}\n`;
-      message += `الكمية: ${item.qty}\n`;
-      message += `السعر: ${item.price} جنيه\n`;
-      message += `الإجمالي: ${itemTotal} جنيه\n`;
+      message += `الوزن: ${totalWeightStr}\n`;
+      message += `السعر الإجمالي: ${itemTotal} جنيه\n`;
     });
 
     message += `\n*إجمالي الطلب:* ${totalAmount} جنيه`;
@@ -291,7 +302,7 @@ export default function Home() {
                   className={`bg-white rounded-2xl p-3 border shadow-2xs flex flex-col justify-between transition ${
                     product.isAvailable
                       ? 'border-brand-border cursor-pointer hover:shadow-sm active:scale-[0.98]'
-                      : 'border-red-200 opacity-85 cursor-not-allowed bg-red-50/20'
+                      : 'border-slate-200 opacity-60 cursor-not-allowed bg-slate-50/70'
                   }`}
                 >
                   <div>
@@ -299,13 +310,9 @@ export default function Home() {
                       <span className="text-[10px] text-brand-accent font-bold bg-[#fbf9f4] px-1.5 py-0.5 rounded border border-brand-border inline-block">
                         {product.category}
                       </span>
-                      {product.isAvailable ? (
-                        <span className="text-[11px] font-black text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-md border border-emerald-300">
-                          متوفر
-                        </span>
-                      ) : (
-                        <span className="text-[11px] font-black text-red-700 bg-red-100 px-2 py-0.5 rounded-md border border-red-400">
-                          غير متوفر
+                      {!product.isAvailable && (
+                        <span className="text-[9px] font-bold text-red-600 bg-red-50 px-1.5 py-0.5 rounded border border-red-200">
+                          غير متاح
                         </span>
                       )}
                     </div>
@@ -318,12 +325,10 @@ export default function Home() {
                     <div className="text-[11px] text-slate-500 font-semibold mb-2.5">
                       {product.variants.map((v, i) => (
                         <div key={i} className="flex justify-between items-center py-0.5 border-t border-slate-50">
-                          <span className={!v.available ? 'line-through text-slate-400 font-bold' : ''}>{v.weight}</span>
-                          {v.available ? (
-                            <span className="font-bold text-brand-primary">{v.price} ج.م</span>
-                          ) : (
-                            <span className="font-black text-red-600 text-[11px]">غير متوفر</span>
-                          )}
+                          <span className={!v.available ? 'line-through text-slate-400' : ''}>{v.weight}</span>
+                          <span className={`font-bold ${v.available ? 'text-brand-primary' : 'text-slate-400 text-[10px]'}`}>
+                            {v.available ? `${v.price} ج.م` : 'نفذ'}
+                          </span>
                         </div>
                       ))}
                     </div>
@@ -332,8 +337,8 @@ export default function Home() {
                         <Plus className="w-3.5 h-3.5" /> اختيار
                       </button>
                     ) : (
-                      <button disabled className="w-full bg-red-600 text-white text-xs py-2 rounded-xl font-black flex items-center justify-center gap-1 cursor-not-allowed shadow-xs">
-                        <Ban className="w-3.5 h-3.5" /> غير متوفر
+                      <button disabled className="w-full bg-slate-200 text-slate-500 text-xs py-2 rounded-xl font-bold flex items-center justify-center gap-1 cursor-not-allowed">
+                        <Ban className="w-3 h-3" /> غير متوفر
                       </button>
                     )}
                   </div>
@@ -400,7 +405,7 @@ export default function Home() {
                     onClick={() => setSelectedVariant(variant)}
                     className={`p-2.5 rounded-xl border text-right transition ${
                       !variant.available 
-                        ? 'opacity-60 bg-red-50/50 border-red-200 cursor-not-allowed'
+                        ? 'opacity-40 bg-slate-100 border-slate-200 cursor-not-allowed'
                         : selectedVariant?.weight === variant.weight
                           ? 'border-brand-primary bg-brand-primary/5 text-brand-dark font-bold ring-2 ring-brand-primary/20'
                           : 'border-slate-200 text-slate-700'
@@ -408,16 +413,10 @@ export default function Home() {
                   >
                     <div className="flex justify-between items-center">
                       <span className="text-xs font-bold">{variant.weight}</span>
-                      {!variant.available && (
-                        <span className="text-[10px] text-red-600 font-black bg-red-100 px-1 rounded">غير متوفر</span>
-                      )}
+                      {!variant.available && <span className="text-[9px] text-red-500 font-bold">غير متاح</span>}
                     </div>
-                    <div className="text-xs font-black mt-0.5">
-                      {variant.available ? (
-                        <span className="text-brand-primary">{variant.price} ج.م</span>
-                      ) : (
-                        <span className="text-red-600 font-black">غير متوفر</span>
-                      )}
+                    <div className="text-xs font-black text-brand-primary mt-0.5">
+                      {variant.available ? `${variant.price} ج.م` : 'غير متوفر'}
                     </div>
                   </button>
                 ))}
@@ -446,15 +445,11 @@ export default function Home() {
             <button
               disabled={!selectedVariant || !selectedVariant.available}
               onClick={addToCart}
-              className={`w-full py-3 rounded-xl font-black text-xs shadow-md transition ${
-                selectedVariant?.available
-                  ? 'bg-brand-primary text-white hover:bg-brand-dark'
-                  : 'bg-red-600 text-white cursor-not-allowed opacity-90'
-              }`}
+              className="w-full bg-brand-primary disabled:opacity-50 disabled:cursor-not-allowed text-white py-3 rounded-xl font-bold text-xs shadow-md hover:bg-brand-dark transition"
             >
               {selectedVariant?.available 
                 ? `إضافة للسلة — ${((selectedVariant?.price || 0) * modalQty).toFixed(2)} ج.م` 
-                : 'هذا الوزن غير متوفر حالياً'}
+                : 'هذا الوزن غير متاح حالياً'}
             </button>
           </div>
         </div>
