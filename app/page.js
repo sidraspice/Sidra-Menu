@@ -192,16 +192,16 @@ export default function Home() {
 
   return (
     <div className="min-h-screen pb-32 text-slate-800 selection:bg-brand-accent selection:text-white bg-[#fbf9f4]">
-      {/* Full-width Logo Only Header (No Extra Text) */}
-      <header className="pt-4 pb-1 px-4 text-center max-w-xl mx-auto flex flex-col items-center justify-center">
-        <div className="w-full max-w-[280px] sm:max-w-[340px] aspect-[4/3] flex items-center justify-center">
+      {/* Full Width Banner Logo (No Text & Fills Screen) */}
+      <div className="w-full flex justify-center items-center bg-[#fbf9f4] pt-2 pb-2">
+        <div className="w-full max-w-xl px-2">
           <img 
             src="/logo.png" 
             alt="عطارة سدرة بدمنهور" 
-            className="w-full h-full object-contain"
+            className="w-full h-auto max-h-[300px] object-contain mx-auto"
           />
         </div>
-      </header>
+      </div>
 
       {/* Main Container */}
       <main className="max-w-xl mx-auto px-4 mt-1">
